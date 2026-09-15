@@ -12,6 +12,15 @@ import { useEffect, useState } from "react"
  * at twelve, so nothing shifts when it resolves.
  */
 
+// Stamp styling is duplicated from site-footer.tsx on purpose: importing the
+// constants from there would pull the server footer module into this client
+// bundle. Keep both copies in sync when the shape changes.
+const STAMP_CLASS =
+  "flex min-h-5.5 items-center gap-2 font-ibm-plex-mono text-[12px] leading-none tracking-wide text-muted-foreground/88 tabular-nums"
+
+const STAMP_LINES_CLASS =
+  "flex flex-col gap-px font-ibm-plex-mono text-[12px] tracking-wide [&>span]:tracking-[0.08em] [&>span]:text-muted-foreground/78 [&>span:last-child:not(:first-child)]:block [&>span:last-child:not(:first-child)]:min-w-[8ch] [&>span:last-child:not(:first-child)]:tracking-[0.02em] [&>span:last-child:not(:first-child)]:whitespace-nowrap [&>span:last-child:not(:first-child)]:text-muted-foreground/90"
+
 function useClockParts(timeZone: string) {
   const [now, setNow] = useState<Date | null>(null)
 
@@ -110,13 +119,13 @@ export function FooterClock({
   const hourAngle = ((hour % 12) + minute / 60 + second / 3600) * 30
 
   return (
-    <div className="footer-stamp">
-      {/* Size, fill and stroke are attributes as well as CSS: an SVG with none of
-          them falls back to its 300×150 intrinsic box filled solid black, so any
-          moment without the stylesheet renders a black disc instead of a dial.
-          The utility still owns the per-hand weights and opacities. */}
+    <div className={STAMP_CLASS}>
+      {/* Size, fill and stroke are attributes as well as classes: an SVG with
+          none of them falls back to its 300×150 intrinsic box filled solid
+          black, so any moment without the stylesheet renders a black disc
+          instead of a dial. */}
       <svg
-        className="footer-clock"
+        className="size-5.5 flex-none overflow-visible"
         viewBox="0 0 32 32"
         width="22"
         height="22"
@@ -125,39 +134,47 @@ export function FooterClock({
         aria-hidden
         focusable="false"
       >
-        <circle className="footer-clock-ring" cx="16" cy="16" r="14.5" />
+        <circle cx="16" cy="16" r="14.5" opacity={0.28} strokeWidth={1} />
         <path
-          className="footer-clock-ticks"
           d="M16 3.5v2M28.5 16h-2M16 28.5v-2M3.5 16h2"
+          opacity={0.28}
+          strokeWidth={1}
+          strokeLinecap="round"
         />
         <line
-          className="footer-clock-hour"
           x1="16"
           y1="16"
           x2="16"
           y2="9.5"
+          opacity={0.78}
+          strokeWidth={1.6}
+          strokeLinecap="round"
           transform={`rotate(${hourAngle} 16 16)`}
         />
         <line
-          className="footer-clock-minute"
           x1="16"
           y1="16"
           x2="16"
           y2="6.75"
+          opacity={0.72}
+          strokeWidth={1.2}
+          strokeLinecap="round"
           transform={`rotate(${minuteAngle} 16 16)`}
         />
         <line
-          className="footer-clock-second"
           x1="16"
           y1="17.5"
           x2="16"
           y2="5.5"
+          opacity={0.42}
+          strokeWidth={0.75}
+          strokeLinecap="round"
           transform={`rotate(${secondAngle} 16 16)`}
         />
-        <circle className="footer-clock-pin" cx="16" cy="16" r="1" />
+        <circle cx="16" cy="16" r="1" fill="currentColor" stroke="none" />
       </svg>
 
-      <span className="footer-stamp-lines">
+      <span className={STAMP_LINES_CLASS}>
         <span suppressHydrationWarning>{offset}</span>
         <time
           suppressHydrationWarning

@@ -162,15 +162,23 @@ function CardBody({
     case "Email":
       return <EnvelopeCard address={link.href.slice("mailto:".length)} />
     case "GitHub":
-      return <GitHubCard data={github} icon={link.icon} />
+      return (
+        <GitHubCard
+          data={github}
+          icon={link.icon}
+          handle={handleFor(link)}
+        />
+      )
     case "LinkedIn":
       return <LinkedInCard icon={link.icon} />
     case "Discord":
       return <DiscordCard handle={handleFor(link)} icon={link.icon} />
-    case "Medium":
-      return <MediumCard handle={handleFor(link)} icon={link.icon} />
+    case "Tiktok":
+      return <TiktokCard handle={handleFor(link)} icon={link.icon} />
+    case "Instagram":
+      return <InstagramCard handle={handleFor(link)} icon={link.icon} />
     default:
-      return <HuggingFaceCard handle={handleFor(link)} icon={link.icon} />
+      return <PlainCard handle={handleFor(link)} icon={link.icon} />
   }
 }
 
@@ -178,11 +186,13 @@ function CardBody({
 function GitHubCard({
   data,
   icon,
+  handle,
 }: {
   data: GitHubSocialCard | null
   icon: React.ReactNode
+  handle: string
 }) {
-  if (!data) return <PlainCard handle="@zickrian" icon={icon} />
+  if (!data) return <PlainCard handle={handle} icon={icon} />
 
   const width = data.weeks * (BLOCK + GAP) - GAP
   const height = ROWS * (BLOCK + GAP) - GAP
@@ -209,7 +219,7 @@ function GitHubCard({
         ))}
       </svg>
 
-      <div className="flex items-center justify-between gap-3 border-t border-line pt-2.5 font-mono text-[0.6875rem] tracking-[0.02em] text-muted-foreground tabular-nums animate-card-content">
+      <div className="flex items-center justify-between gap-3 border-t border-line pt-2.5 font-ibm-plex-mono text-[0.6875rem] tracking-[0.02em] text-muted-foreground tabular-nums animate-card-content">
         <span>
           <b className="font-medium text-foreground">
             {data.contributions.toLocaleString("en-US")}
@@ -237,7 +247,7 @@ function GitHubCard({
  */
 function Kicker({ children }: { children: React.ReactNode }) {
   return (
-    <span className="font-mono text-[0.625rem] tracking-[0.18em] text-muted-foreground uppercase">
+    <span className="font-ibm-plex-mono text-[0.625rem] tracking-[0.18em] text-muted-foreground uppercase">
       {children}
     </span>
   )
@@ -265,7 +275,7 @@ function LinkedInCard({ icon }: { icon: React.ReactNode }) {
             <span className="text-muted-foreground"> · {job.company}</span>
           </span>
         )}
-        <span className="font-mono text-[0.6875rem] text-muted-foreground">
+        <span className="font-ibm-plex-mono text-[0.6875rem] text-muted-foreground">
           {USER.address}
         </span>
       </div>
@@ -310,14 +320,17 @@ function DiscordCard({
         <p className="text-sm font-medium text-foreground">
           {USER.displayName}
         </p>
-        <p className="font-mono text-xs text-muted-foreground">{handle}</p>
+        <p className="font-ibm-plex-mono text-xs text-muted-foreground">{handle}</p>
       </div>
     </div>
   )
 }
 
-/** Medium is editorial: a rule, a standfirst, a byline. Already monochrome. */
-function MediumCard({
+/**
+ * TikTok is short-form video: a vertical-format placeholder frame over the
+ * handle, keeping the monochrome family (no brand cyan, no pink).
+ */
+function TiktokCard({
   handle,
   icon,
 }: {
@@ -327,13 +340,11 @@ function MediumCard({
   return (
     <div className="flex flex-col gap-2 animate-card-content">
       <div className="flex items-center justify-between border-b border-line pb-2">
-        <Kicker>Writing</Kicker>
+        <Kicker>Videos</Kicker>
         <Glyph icon={icon} />
       </div>
-      <p className="text-sm/relaxed text-pretty text-foreground italic">
-        “{USER.seoDescription}”
-      </p>
-      <span className="font-mono text-[0.6875rem] tracking-[0.02em] text-muted-foreground">
+      <p className="text-sm font-medium text-foreground">{USER.displayName}</p>
+      <span className="font-ibm-plex-mono text-[0.6875rem] tracking-[0.02em] text-muted-foreground">
         {handle}
       </span>
     </div>
@@ -341,10 +352,10 @@ function MediumCard({
 }
 
 /**
- * Hugging Face is a model card: a mono header strip over a spec line. The strip
- * is the page's own muted surface; the yellow is left to the glyph alone.
+ * Instagram is a photo grid: a 3-up row of muted tiles above the handle, so the
+ * card reads as a profile without borrowing the app's gradient.
  */
-function HuggingFaceCard({
+function InstagramCard({
   handle,
   icon,
 }: {
@@ -352,17 +363,22 @@ function HuggingFaceCard({
   icon: React.ReactNode
 }) {
   return (
-    <div className="-m-2.5 overflow-hidden animate-card-content">
-      <div className="flex items-center justify-between gap-2 border-b border-line bg-muted/40 px-3 py-2">
-        <span className="font-mono text-xs tracking-[0.02em] text-foreground">
-          {handle}
-        </span>
+    <div className="flex flex-col gap-2 animate-card-content">
+      <div className="flex items-center justify-between border-b border-line pb-2">
+        <Kicker>Photos</Kicker>
         <Glyph icon={icon} />
       </div>
-      <div className="flex flex-col gap-1 px-3 py-2.5">
-        <Kicker>Models · Datasets · Spaces</Kicker>
-        <span className="text-sm text-foreground">{USER.displayName}</span>
+      <div className="grid grid-cols-3 gap-1" aria-hidden>
+        {Array.from({ length: 3 }).map((_, index) => (
+          <span
+            key={index}
+            className="aspect-square rounded-[3px] border border-line bg-muted/40"
+          />
+        ))}
       </div>
+      <span className="font-ibm-plex-mono text-[0.6875rem] tracking-[0.02em] text-muted-foreground">
+        {handle}
+      </span>
     </div>
   )
 }
@@ -381,7 +397,7 @@ function PlainCard({
         <span className="text-sm font-medium text-foreground">
           {USER.displayName}
         </span>
-        <span className="font-mono text-xs text-muted-foreground">
+        <span className="font-ibm-plex-mono text-xs text-muted-foreground">
           {handle}
         </span>
       </div>
@@ -449,7 +465,7 @@ function EnvelopeCard({ address }: { address: string }) {
   )
 }
 
-/** "https://github.com/zickrian" → "@zickrian"; falls back to the host. */
+/** "https://github.com/penghancurbumi" → "@penghancurbumi"; falls back to the host. */
 function handleFor(link: SocialLink) {
   try {
     const url = new URL(link.href)
