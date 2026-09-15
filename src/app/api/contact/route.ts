@@ -400,6 +400,13 @@ export async function POST(req: Request) {
     }
 
     const resend = getResendClient()
+    // In development the custom domain is not verified yet, so fall back to
+    // Resend's test sender — delivery only works to emails registered on the
+    // Resend account (the owner address). Production uses the real domain.
+    const FROM_DOMAIN =
+      process.env.NODE_ENV === "production"
+        ? "hello@alfakhrza.dev"
+        : "onboarding@resend.dev"
     const payload: ContactPayload = {
       senderName,
       senderEmail,
@@ -410,14 +417,14 @@ export async function POST(req: Request) {
     // Send both emails concurrently
     const [ownerResult, senderResult] = await Promise.allSettled([
       resend.emails.send({
-        from: `${USER.displayName} Portfolio <hello@zickrian.dev>`,
+        from: `${USER.displayName} Portfolio <${FROM_DOMAIN}>`,
         to: [OWNER_EMAIL],
         replyTo: senderEmail,
         subject: `[Contact] ${subject} - from ${senderName}`,
         html: buildOwnerHtml(payload),
       }),
       resend.emails.send({
-        from: `${USER.displayName} <hello@zickrian.dev>`,
+        from: `${USER.displayName} <${FROM_DOMAIN}>`,
         to: [senderEmail],
         subject: `Message received! – ${USER.displayName}`,
         html: buildSenderHtml(payload),
@@ -434,7 +441,12 @@ export async function POST(req: Request) {
         ownerResult.status === "rejected"
           ? ownerResult.reason
           : ownerResult.value.error
-      console.error("Failed to send owner email:", err)
+      console.error(
+        "Failed to send owner email:",
+        err instanceof Error
+          ? err.message
+          : JSON.stringify(err, Object.getOwnPropertyNames(err ?? {}))
+      )
       return NextResponse.json(
         { error: "Failed to send email. Please try again later." },
         { status: 500 }
@@ -446,7 +458,10 @@ export async function POST(req: Request) {
       senderNotified: senderOk,
     })
   } catch (error) {
-    console.error("Contact API Error:", error)
+    console.error(
+      "Contact API Error:",
+      error instanceof Error ? error.message : String(error)
+    )
     return NextResponse.json(
       { error: "An unexpected error occurred." },
       { status: 500 }
