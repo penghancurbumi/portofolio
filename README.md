@@ -1,8 +1,8 @@
-# Personal Portfolio — zickrian.dev
+# Personal Portfolio â€” alfakhrza.dev
 
 > Source code of my personal portfolio. Built with Next.js 16, React 19, and Tailwind CSS v4.
 
-**Live →** [zickrian.dev](https://www.zickrian.dev)
+**Live â†’** [alfakhrza.dev](https://www.alfakhrza.dev)
 
 ---
 
@@ -20,16 +20,16 @@
 
 ## Features
 
-- **AI Chat Widget** — streaming chat powered by Groq, context-aware about my profile and projects
-- **Bilingual** — full Indonesian / English toggle
-- **Contact Form** — with AI-assisted email formatting via Groq
-- **Blog** — pulls posts from Medium RSS feed
-- **GitHub Contributions** — live contribution graph
-- **Sound System** — subtle audio feedback on interactions
+- **AI Chat Widget** â€” streaming chat powered by Groq, context-aware about my profile and projects
+- **Bilingual** â€” full Indonesian / English toggle
+- **Contact Form** â€” with AI-assisted email formatting via Groq
+- **Blog** â€” pulls posts from Medium RSS feed
+- **GitHub Contributions** â€” live contribution graph
+- **Sound System** â€” subtle audio feedback on interactions
 
 ## Getting Started
 
-**Prerequisites:** Node.js ≥ 22, pnpm ≥ 9
+**Prerequisites:** Node.js â‰¥ 22, pnpm â‰¥ 9
 
 ```bash
 git clone https://github.com/zickrian/zickriann.git
@@ -43,8 +43,8 @@ pnpm dev
 
 | Variable | Required | Description |
 |---|---|---|
-| `GROQ_API_KEY` | ✅ | [groq.com](https://console.groq.com) — free tier available |
-| `RESEND_API_KEY` | ✅ | [resend.com](https://resend.com) — free tier available |
+| `GROQ_API_KEY` | âœ… | [groq.com](https://console.groq.com) â€” free tier available |
+| `RESEND_API_KEY` | âœ… | [resend.com](https://resend.com) â€” free tier available |
 | `APP_URL` | optional | Production URL for SEO/OG metadata |
 
 ## Scripts
@@ -59,5 +59,5 @@ pnpm test         # Unit tests (Vitest)
 
 ## License
 
-[MIT](./LICENSE) © Firdaus Khotibul Zickrian
+[MIT](./LICENSE) Â© Firdaus Khotibul Zickrian
 

@@ -3,7 +3,6 @@ import { AWARDS } from "@/features/portfolio/data/awards"
 import { CERTIFICATIONS } from "@/features/portfolio/data/certifications"
 import { EXPERIENCES } from "@/features/portfolio/data/experiences"
 import { PROJECTS } from "@/features/portfolio/data/projects"
-import { PUBLICATIONS } from "@/features/portfolio/data/publications"
 import { TECH_STACK } from "@/features/portfolio/data/tech-stack"
 import { USER } from "@/features/portfolio/data/user"
 import { decodeEmail } from "@/utils/string"
@@ -55,10 +54,6 @@ function buildLlmsFullTxt(): string {
     return `- **${award.title}** (${award.grade})\n  * Prize: ${award.prize}\n  * Date: ${award.date}\n  * Details: ${(award.description ?? "").replace(/\n+/g, " ")}\n  * Reference: ${award.referenceLink}`
   }).join("\n\n")
 
-  const publicationSections = PUBLICATIONS.map((pub) => {
-    return `- **${pub.title}**\n  * Journal: ${pub.journal}\n  * Date: ${pub.date}\n  * URL: ${pub.url}\n  * Summary: ${pub.description}`
-  }).join("\n\n")
-
   const techCategories = Array.from(
     new Set(TECH_STACK.flatMap((item) => item.categories))
   )
@@ -71,24 +66,22 @@ function buildLlmsFullTxt(): string {
     })
     .join("\n")
 
-  return `# Complete Knowledge Base — Firdaus Khotibul Zickrian
+  return `# Complete Knowledge Base — Muhammad Al Fakhreza Dwi Putra
 
-> Firdaus Khotibul Zickrian is an AI & Machine Learning Engineer and Computer Science scholar at Universitas Dian Nuswantoro (GPA 3.88/4.00) based in Indonesia. He specializes in practical machine learning systems, business process automation, ERP integrations, predictive analytics, and modern full-stack web applications.
+> Muhammad Al Fakhreza Dwi Putra is an Informatics Engineering student at Universitas Nusa Putra (GPA 3.50/4.00), based in Indonesia. He specializes in modern full-stack web development, practical software engineering, AI-powered applications, and data-driven solutions. His interests include machine learning, automation, system development, and building technology that solves real-world problems.
 
 ---
 
 ## 1. Executive Summary & Profile
 
-- **Full Name**: Firdaus Khotibul Zickrian
-- **Role**: AI & Machine Learning Engineer / Full-Stack Developer / Data Scientist
-- **Location**: Semarang, Indonesia (Timezone: Asia/Jakarta, UTC+7)
+- **Full Name**: Muhammad Al Fakhreza Dwi Putra
+- **Role**: AI / Full-Stack Developer / Data 
+- **Location**: Sukabumi, Indonesia (Timezone: Asia/Jakarta, UTC+7)
 - **Email**: ${email}
 - **Phone**: ${USER.phone}
 - **Website**: ${baseUrl}
-- **LinkedIn**: https://linkedin.com/in/firdauskhotibulzickrian/
-- **GitHub**: https://github.com/zickrian
-- **Hugging Face**: https://huggingface.co/zickrian
-- **Medium**: https://medium.com/@zickriann
+- **LinkedIn**: https://www.linkedin.com/in/muhammad-al-fakhreza-dwi-putra-b16962301/
+- **GitHub**: https://github.com/penghancurbumi
 - **Bio**: ${USER.bio}
 - **About**: ${USER.about}
 
@@ -135,12 +128,6 @@ ${awardSections}
 
 ---
 
-## 7. Research Publications & Scientific Papers
-
-${publicationSections}
-
----
-
 ## 8. Professional Certifications (30+ Verified Credentials)
 
 ${certSections}
@@ -151,8 +138,8 @@ ${certSections}
 
 - **Direct Inquiries**: Use the interactive contact modal at ${baseUrl}
 - **Email**: ${email}
-- **GitHub**: https://github.com/zickrian
-- **LinkedIn**: https://linkedin.com/in/firdauskhotibulzickrian/
+- **GitHub**: https://github.com/penghancurbumi
+- **LinkedIn**: https://www.linkedin.com/in/muhammad-al-fakhreza-dwi-putra-b16962301/
 `
 }
 

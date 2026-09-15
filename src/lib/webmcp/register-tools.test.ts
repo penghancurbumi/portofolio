@@ -30,7 +30,7 @@ describe("WebMCP Tool Registration & Execution", () => {
     expect(resAll.totalCount).toBeGreaterThan(0)
     expect(resAll.projects.length).toBeLessThanOrEqual(10)
 
-    const resQuery = (await searchTool.execute({ query: "machine learning" })) as {
+    const resQuery = (await searchTool.execute({ query: "tailwind" })) as {
       totalCount: number
       projects: unknown[]
     }
@@ -40,13 +40,13 @@ describe("WebMCP Tool Registration & Execution", () => {
   it("executes get_project_details for valid and invalid slugs", async () => {
     const detailsTool = tools.find((t) => t.name === "get_project_details")!
 
-    const resValid = (await detailsTool.execute({ slug: "leadsup" })) as {
+    const resValid = (await detailsTool.execute({ slug: "jobfinder" })) as {
       id: string
       title: string
       role: string
     }
-    expect(resValid.id).toBe("leadsup")
-    expect(resValid.title).toContain("LeadsUp")
+    expect(resValid.id).toBe("jobfinder")
+    expect(resValid.title).toContain("JobFinder")
 
     const resInvalid = (await detailsTool.execute({ slug: "nonexistent-slug-123" })) as {
       error: string
@@ -56,16 +56,16 @@ describe("WebMCP Tool Registration & Execution", () => {
     expect(resInvalid.availableProjectIds.length).toBeGreaterThan(0)
   })
 
-  it("executes get_profile_overview with GPA 3.88 and education details", async () => {
+  it("executes get_profile_overview with identity, education focus, and tech stack", async () => {
     const profileTool = tools.find((t) => t.name === "get_profile_overview")!
     const res = (await profileTool.execute({})) as {
       name: string
-      education: { gpa: string; institution: string }
+      education: { degree: string; focusAreas: string[] }
       techStackSummary: unknown[]
     }
-    expect(res.name).toBe("Firdaus Khotibul Zickrian")
-    expect(res.education.gpa).toContain("3.88")
-    expect(res.education.institution).toContain("Universitas Dian Nuswantoro")
+    expect(res.name).toBe("Muhammad Al Fakhreza Dwi Putra")
+    expect(res.education.degree).toContain("Informatics Engineering")
+    expect(res.education.focusAreas).toContain("Artificial Intelligence")
     expect(res.techStackSummary.length).toBeGreaterThan(0)
   })
 

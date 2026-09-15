@@ -28,7 +28,7 @@ export const USER: User = {
   ],
 
   address: "Indonesia",
-  email: "ZmlyZGF1c2tob3RpYnVsemlja3JpYW5AZ21haWwuY29t", // base64 of firdauskhotibulzickrian@gmail.com
+  email: "bS5hbGZha2hyZXphQGdtYWlsLmNvbQ==", // base64 of m.alfakhreza@gmail.com
   phone: "+62 878-1600-1844",
   website: "https://www.alfakhrza.dev",
 
@@ -52,7 +52,7 @@ export const USER: User = {
   avatar: "/avatar-profile.webp",
   ogImage: "/image/og.png",
   sameAs: [
-    "https://www.zickrian.dev",
+    "https://www.alfakhrza.dev",
     "https://github.com/zickrian",
     "https://linkedin.com/in/firdauskhotibulzickrian/",
     "https://medium.com/@zickriann",

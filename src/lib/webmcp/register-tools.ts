@@ -1,8 +1,8 @@
 import { SITE_INFO } from "@/config/site"
+import { AWARDS } from "@/features/portfolio/data/awards"
 import { CERTIFICATIONS } from "@/features/portfolio/data/certifications"
 import { EXPERIENCES } from "@/features/portfolio/data/experiences"
 import { PROJECTS } from "@/features/portfolio/data/projects"
-import { PUBLICATIONS } from "@/features/portfolio/data/publications"
 import { TECH_STACK } from "@/features/portfolio/data/tech-stack"
 import { USER } from "@/features/portfolio/data/user"
 import { decodeEmail } from "@/utils/string"
@@ -41,11 +41,28 @@ export function getPortfolioWebMCPTools(): WebMCPToolDefinition[] {
     skills: TECH_STACK.filter((item) => item.categories.includes(cat)).map((i) => i.title),
   }))
 
+  // Derive the social map from USER.sameAs so the tools never drift from the
+  // single source of truth used across the site.
+  const socialProfiles = Object.fromEntries(
+    USER.sameAs.map((url) => {
+      const key = url.includes("github.com")
+        ? "github"
+        : url.includes("linkedin.com")
+          ? "linkedin"
+          : url.includes("huggingface.co")
+            ? "huggingface"
+            : url.includes("medium.com")
+              ? "medium"
+              : "website"
+      return [key, url]
+    })
+  )
+
   return [
     {
       name: "search_projects",
       description:
-        "Search Firdaus Khotibul Zickrian's portfolio projects by keyword, technology, or category.",
+        `Search ${USER.displayName}'s portfolio projects by keyword, technology, or category.`,
       inputSchema: {
         type: "object",
         properties: {
@@ -166,7 +183,7 @@ export function getPortfolioWebMCPTools(): WebMCPToolDefinition[] {
     {
       name: "get_profile_overview",
       description:
-        "Retrieve Firdaus Khotibul Zickrian's professional bio, academic record (UDINUS GPA 3.88), core skillset, awards, publications, and contact channels.",
+        `Retrieve ${USER.displayName}'s professional bio, core skillset, awards, publications, and contact channels.`,
       inputSchema: {
         type: "object",
         properties: {
@@ -197,27 +214,22 @@ export function getPortfolioWebMCPTools(): WebMCPToolDefinition[] {
           email,
           phone: USER.phone,
           website: baseUrl,
-          socialProfiles: {
-            github: "https://github.com/zickrian",
-            linkedin: "https://linkedin.com/in/firdauskhotibulzickrian/",
-            huggingface: "https://huggingface.co/zickrian",
-            medium: "https://medium.com/@zickriann",
-          },
+          bio: USER.bio,
+          socialProfiles,
           education: {
-            institution: "Universitas Dian Nuswantoro (UDINUS)",
-            degree: "Bachelor of Computer Science (S.Kom)",
-            period: "2023 – Present (Expected Graduation: October 2027)",
-            gpa: "3.88 / 4.00",
-            creditsCompleted: "129 of 144 credits",
-            focusAreas: ["Machine Learning", "Data Analytics", "Predictive Analytics", "AI Systems"],
+            degree: "Informatics Engineering (Computer Science)",
+            focusAreas: ["Software Engineering", "Data", "Artificial Intelligence"],
           },
-          publications: PUBLICATIONS.map((pub) => ({
-            title: pub.title,
-            journal: pub.journal,
-            date: pub.date,
-            url: pub.url,
-            summary: pub.description,
-          })),
+          techStackSummary: techSummary,
+          awards: includeAwards
+            ? AWARDS.slice(0, 10).map((award) => ({
+              title: award.title,
+              prize: award.prize,
+              date: award.date,
+              grade: award.grade,
+              referenceLink: award.referenceLink || null,
+            }))
+            : undefined,
           certificationsCount: CERTIFICATIONS.length,
           certifications: includeCertifications
             ? CERTIFICATIONS.slice(0, 15).map((c) => ({
@@ -271,7 +283,7 @@ export function getPortfolioWebMCPTools(): WebMCPToolDefinition[] {
     {
       name: "send_contact_message",
       description:
-        "Send an inquiry, collaboration proposal, or message directly to Firdaus Khotibul Zickrian via the verified portfolio mailer.",
+        `Send an inquiry, collaboration proposal, or message directly to ${USER.displayName} via the verified portfolio mailer.`,
       inputSchema: {
         type: "object",
         properties: {
@@ -319,7 +331,7 @@ export function getPortfolioWebMCPTools(): WebMCPToolDefinition[] {
 
           return {
             ok: true,
-            message: "Your message has been successfully sent to Firdaus Khotibul Zickrian.",
+            message: `Your message has been successfully sent to ${USER.displayName}.`,
           }
         } catch (err: unknown) {
           const errMsg = err instanceof Error ? err.message : "Network error while sending contact message."

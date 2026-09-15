@@ -1,7 +1,6 @@
 import { CERTIFICATIONS } from "@/features/portfolio/data/certifications"
 import { EXPERIENCES } from "@/features/portfolio/data/experiences"
 import { PROJECTS } from "@/features/portfolio/data/projects"
-import { PUBLICATIONS } from "@/features/portfolio/data/publications"
 import { SOCIAL_LINKS } from "@/features/portfolio/data/social-links"
 import { TECH_STACK } from "@/features/portfolio/data/tech-stack"
 import { USER } from "@/features/portfolio/data/user"
@@ -64,11 +63,6 @@ const SECTION_LINKS: Partial<
     total: CERTIFICATIONS.length,
     url: `${USER.website}/#certs`,
     noun: "certification",
-  },
-  publication: {
-    total: PUBLICATIONS.length,
-    url: `${USER.website}/#publications`,
-    noun: "publication",
   },
 }
 
@@ -799,29 +793,6 @@ function createOtherDocuments(
         certification.issuer,
       ],
       url: certification.credentialURL,
-      priority: 9,
-    })),
-    ...PUBLICATIONS.map((publication) => ({
-      id: `publication:${publication.id}`,
-      type: "publication" as const,
-      title: publication.title,
-      summary: `${publication.title}, ${publication.journal}, ${publication.date}.`,
-      details: joinLines([
-        compactText(publication.description, 700),
-        publication.url ? `URL: ${publication.url}.` : undefined,
-      ]),
-      keywords: [
-        "publication",
-        "paper",
-        "journal",
-        "publikasi",
-        "riset",
-        "research",
-        "artikel",
-        publication.title,
-        publication.journal,
-      ],
-      url: publication.url,
       priority: 9,
     })),
     {
