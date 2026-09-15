@@ -5,6 +5,7 @@ import { SectionSeparator } from "@/components/section-separator"
 import { Experiences } from "@/features/portfolio/components/experiences"
 import { Projects } from "@/features/portfolio/components/projects"
 import { TechStack } from "@/features/portfolio/components/tech-stack"
+import { CERTIFICATIONS } from "@/features/portfolio/data/certifications"
 import { USER } from "@/features/portfolio/data/user"
 
 // Below-fold components dynamically imported with SSR enabled
@@ -17,13 +18,6 @@ const GitHubContributions = dynamic(
   { ssr: true }
 )
 
-const Publications = dynamic(
-  () =>
-    import("@/features/portfolio/components/publications").then(
-      (m) => m.Publications
-    ),
-  { ssr: true }
-)
 
 const Certifications = dynamic(
   () =>
@@ -64,8 +58,12 @@ export default function Page() {
       <GitHubContributions />
       <SectionSeparator />
 
-      <Certifications />
-      <SectionSeparator />
+      {CERTIFICATIONS.length > 0 && (
+        <>
+          <Certifications />
+          <SectionSeparator />
+        </>
+      )}
     </>
   )
 }
