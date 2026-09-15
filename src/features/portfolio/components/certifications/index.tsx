@@ -10,6 +10,10 @@ import { CertificationItem } from "./certification-item"
 export function Certifications() {
   const { t } = useTranslation()
 
+  // Nothing to show while the list is empty — hiding the panel entirely keeps
+  // the home page from rendering an empty "(0)" section.
+  if (CERTIFICATIONS.length === 0) return null
+
   return (
     <Panel id="certs">
       <PanelHeader>

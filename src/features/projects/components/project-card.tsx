@@ -46,9 +46,9 @@ export function ProjectCard({
       >
         {/* Photo frame container (locked design) */}
         <div className="relative flex aspect-[16/10] w-full items-center justify-center overflow-hidden rounded-lg border border-line bg-muted select-none">
-          {/* Main Background: Sharp unblurred image.webp */}
+          {/* Main background: shared card backdrop */}
           <Image
-            src="/image.webp"
+            src="/background-project.webp"
             alt=""
             fill
             sizes="(min-width: 640px) 550px, 100vw"

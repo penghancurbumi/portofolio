@@ -35,28 +35,76 @@ type GalleryItem = {
 
 const GALLERY_ITEMS: GalleryItem[] = [
   {
-    src: "/image/basee.webp",
-    title: "Base Realms hackathon project showcase",
+    src: "/image/antik 2024.webp",
+    title: "antik 2024 junalism",
     date: "2025",
   },
   {
-    src: "https://res.cloudinary.com/dujp9ydkx/video/upload/WhatsApp_Video_2026-05-11_at_13.12.10_pmvmgx",
-    title: "AI and software development journey video",
-    date: "2026",
-    type: "video",
+    src: "/image/diklat nusapala.webp",
+    title: "nusapala diklat",
+    date: "2025",
   },
   {
-    src: "/image/picture1.webp",
-    title: "Technology event and project collaboration moment",
-    date: "2026",
-    aspect: "wide",
+    src: "/image/divisi kominfo.webp",
+    title: "divisi kominfo",
+    date: "2024",
   },
   {
-    src: "/image/btng.webp",
-    title: "Behind-the-scenes software project work",
+    src: "/image/divisi kominfo 2.webp",
+    title: "divisi kominfo 2",
     date: "2026",
-    aspect: "wide",
   },
+  {
+    src: "/image/fun run nusapala.webp",
+    title: "fun run nusapala",
+    date: "2026",
+  },
+  {
+    src: "/image/mabim 2023.webp",
+    title: "mabim 2023",
+    date: "2023",
+  },
+  {
+    src: "/image/mabim 2025.webp",
+    title: "mabim 2025",
+    date: "2025",
+  },
+  {
+    src: "/image/magang pt silga perkasa.webp",
+    title: "magang pt silga perkasa",
+    date: "2026",
+  },
+  {
+    src: "/image/mentoring kelompok singapura.webp",
+    title: "mentoring kelompok singapura",
+    date: "2026",
+  },
+  {
+    src: "/image/mubes 2025.webp",
+    title: "mubes 2025",
+    date: "2025",
+  },
+  {
+    src: "/image/panitia ldkm.webp",
+    title: "panitia ldkm",
+    date: "2025",
+  },
+  {
+    src: "/image/pelatihan jurnalis.webp",
+    title: "pelatihan jurnalis",
+    date: "2025",
+  },
+  {
+    src: "/image/rapat himpunan.webp",
+    title: "rapat himpunan",
+    date: "2025",
+  },
+  {
+    src: "/image/restek.webp",
+    title: "restek",
+    date: "2025",
+  },
+
 ]
 
 function getGalleryJsonLd() {
@@ -126,8 +174,8 @@ function GalleryCard({ item, eager }: { item: GalleryItem; eager?: boolean }) {
     <div className="flex flex-col gap-2 bg-card p-3">
       <div
         className={cn(
-          "group/media relative overflow-hidden rounded-xl select-none",
-          item.aspect === "wide" ? "aspect-2/1" : "aspect-square"
+          "group/media relative overflow-hidden select-none",
+          item.aspect === "wide" ? "aspect-2/1" : "aspect-4/3"
         )}
       >
         {item.type === "video" ? (
