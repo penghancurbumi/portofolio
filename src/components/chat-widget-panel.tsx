@@ -32,10 +32,20 @@ type ChatMessage = {
 }
 
 type EmailFlowStep =
-  "idle" | "filling_form" | "formatting" | "confirming" | "sending" | "done"
+  | "idle"
+  | "filling_form"
+  | "formatting"
+  | "confirming"
+  | "sending"
+  | "done"
+  | "compose_sender"
+  | "compose_subject"
+  | "compose_body"
+  | "compose_send"
 
 type EmailFlowData = {
   step: EmailFlowStep
+  source: "form" | "compose"
   name: string
   email: string
   rawMessage: string
@@ -65,6 +75,52 @@ function createId() {
 
 function isValidEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())
+}
+
+function isComposeStep(step: EmailFlowStep) {
+  return (
+    step === "compose_sender" ||
+    step === "compose_subject" ||
+    step === "compose_body" ||
+    step === "compose_send"
+  )
+}
+
+// Accepts `John Doe <john@example.com>`, `john@example.com`, or
+// `John Doe, john@example.com` — derives a display name when only an
+// email is given.
+function parseSenderInput(
+  value: string
+): { name: string; email: string } | null {
+  const trimmed = value.trim()
+  const angle = trimmed.match(/^(.*?)<([^>]+)>$/)
+  if (angle) {
+    const email = angle[2].trim()
+    if (!isValidEmail(email)) return null
+    return { name: angle[1].trim() || humanizeEmailLocalPart(email), email }
+  }
+  const comma = trimmed.split(",")
+  if (comma.length === 2 && isValidEmail(comma[1])) {
+    return {
+      name: comma[0].trim() || humanizeEmailLocalPart(comma[1].trim()),
+      email: comma[1].trim(),
+    }
+  }
+  if (isValidEmail(trimmed)) {
+    return { name: humanizeEmailLocalPart(trimmed), email: trimmed }
+  }
+  return null
+}
+
+function humanizeEmailLocalPart(email: string) {
+  const local = email.split("@")[0]
+    .replace(/[.\-_0-9]+/g, " ")
+    .trim()
+  if (!local) return email
+  return local
+    .split(/\s+/)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ")
 }
 
 // ─── Per-browser Rate Limit (localStorage) ───────────────────────────────────
@@ -430,6 +486,10 @@ const MarkdownRenderer = memo(({ content }: { content: string }) => {
               )
             }
 
+            if (lang === "today") {
+              return <TodayLiveBox weather={codeString} />
+            }
+
             if (lang === "help" || lang === "plain") {
               return (
                 <code className="block font-mono text-foreground/90">{children}</code>
@@ -477,43 +537,18 @@ const CLI_BANNER = [
 
 const COMMAND_ALIASES: Record<string, string> = {
   about: "about",
-  tentang: "about",
-  bio: "about",
-  profile: "about",
-  profil: "about",
-
   projects: "projects",
-  project: "projects",
-  proyek: "projects",
-  portfolio: "projects",
-  portofolio: "projects",
-
   skills: "skills",
-  skill: "skills",
-  keahlian: "skills",
-  stack: "skills",
-  tech: "skills",
-  techstack: "skills",
-
   experience: "experience",
-  experiences: "experience",
-  pengalaman: "experience",
-  karir: "experience",
-  career: "experience",
-  kerja: "experience",
-
   contact: "contact",
-  kontak: "contact",
-  email: "contact",
-  hubungi: "contact",
-
+  email: "email",
+  today: "today",
   help: "help",
-  bantuan: "help",
-  commands: "help",
-  menu: "help",
-
   clear: "clear",
   cls: "clear",
+
+  halo: "greeting",
+  hi: "greeting",
 }
 
 function parseTerminalCommand(raw: string): string | null {
@@ -525,22 +560,221 @@ function parseTerminalCommand(raw: string): string | null {
   return COMMAND_ALIASES[cleaned] || null
 }
 
+// ─── `today` command (date/time + live weather via Open-Meteo) ────────────────
+
+const TODAY_WEATHER_CODES: Record<number, string> = {
+  0: "Clear sky",
+  1: "Mainly clear",
+  2: "Partly cloudy",
+  3: "Overcast",
+  45: "Fog",
+  48: "Depositing rime fog",
+  51: "Light drizzle",
+  53: "Moderate drizzle",
+  55: "Dense drizzle",
+  56: "Light freezing drizzle",
+  57: "Dense freezing drizzle",
+  61: "Slight rain",
+  63: "Moderate rain",
+  65: "Heavy rain",
+  66: "Light freezing rain",
+  67: "Heavy freezing rain",
+  71: "Slight snowfall",
+  73: "Moderate snowfall",
+  75: "Heavy snowfall",
+  77: "Snow grains",
+  80: "Slight rain showers",
+  81: "Moderate rain showers",
+  82: "Violent rain showers",
+  85: "Slight snow showers",
+  86: "Heavy snow showers",
+  95: "Thunderstorm",
+  96: "Thunderstorm with slight hail",
+  99: "Thunderstorm with heavy hail",
+}
+
+async function fetchTodayWeather(): Promise<string> {
+  try {
+    // Jakarta coordinates — the portfolio's location anchor.
+    const res = await fetch(
+      "https://api.open-meteo.com/v1/forecast?latitude=-6.2088&longitude=106.8456&current=temperature_2m,weather_code&timezone=Asia%2FJakarta"
+    )
+    if (!res.ok) return "Unavailable"
+    const data = (await res.json()) as {
+      current?: { temperature_2m?: number; weather_code?: number }
+    }
+    const temp = data.current?.temperature_2m
+    if (typeof temp !== "number") return "Unavailable"
+    const desc = TODAY_WEATHER_CODES[data.current?.weather_code ?? -1] ?? "Unknown"
+    return `${Math.round(temp)}°C · ${desc}`
+  } catch {
+    return "Unavailable"
+  }
+}
+
+function drawAsciiBox(bodyLines: string[], title: string): string[] {
+  const innerWidth = Math.max(...bodyLines.map((line) => line.length))
+  const header = `┌─ ${title} `
+  const top =
+    header + "─".repeat(Math.max(1, innerWidth + 4 - header.length - 1)) + "┐"
+  const middle = bodyLines.map((line) => `│ ${line.padEnd(innerWidth)} │`)
+  const bottom = `└${"─".repeat(innerWidth + 2)}┘`
+  return [top, ...middle, bottom]
+}
+
+function wrapPlainText(text: string, width: number): string[] {
+  const lines: string[] = []
+  for (const paragraph of text.split("\n")) {
+    if (!paragraph.trim()) {
+      lines.push("")
+      continue
+    }
+    let current = ""
+    for (const word of paragraph.split(/\s+/)) {
+      if (!current) current = word
+      else if (`${current} ${word}`.length > width) {
+        lines.push(current)
+        current = word
+      } else {
+        current += ` ${word}`
+      }
+    }
+    if (current) lines.push(current)
+  }
+  return lines
+}
+
+function buildEmailPreviewBox(
+  labels: {
+    title: string
+    sender: string
+    subject: string
+    body: string
+    status: string
+    ready: string
+  },
+  name: string,
+  email: string,
+  subject: string,
+  message: string
+): string[] {
+  const labelWidth = Math.max(
+    labels.sender.length,
+    labels.subject.length,
+    labels.body.length,
+    labels.status.length
+  )
+  const indent = 2
+  const textWidth = 44
+  const pad = " ".repeat(indent + labelWidth + 2)
+  const rows: string[] = []
+  const addField = (label: string, value: string) => {
+    wrapPlainText(value, textWidth).forEach((line, index) => {
+      rows.push(
+        index === 0
+          ? `${" ".repeat(indent)}${label.padEnd(labelWidth)}  ${line}`
+          : `${pad}${line}`
+      )
+    })
+  }
+  rows.push("")
+  addField(labels.sender, `${name} <${email}>`)
+  addField(labels.subject, subject)
+  rows.push("")
+  addField(labels.body, message)
+  rows.push("")
+  addField(labels.status, labels.ready)
+  rows.push("")
+  return drawAsciiBox(rows, labels.title)
+}
+
+function buildTodayResponse(_lang: string, weather: string): string {
+  // The actual box is rendered live (ticking clock) by TodayLiveBox via the
+  // `today` code-fence language; the fence payload carries the weather line.
+  return ["```today", weather, "```"].join("\n")
+}
+
+function TodayLiveBox({ weather }: { weather: string }) {
+  const { language } = useTranslation()
+  const [now, setNow] = useState(() => new Date())
+
+  useEffect(() => {
+    const id = setInterval(() => setNow(new Date()), 1000)
+    return () => clearInterval(id)
+  }, [])
+
+  const isEn = language === "en"
+  const date = now.toLocaleDateString(isEn ? "en-US" : "id-ID", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    timeZone: TIMEZONE,
+  })
+  const time = now.toLocaleTimeString("en-GB", {
+    hour12: false,
+    timeZone: TIMEZONE,
+  })
+  const rows: [string, string][] = [
+    ["Date", date],
+    ["Time", `${time} ${TIMEZONE_LABEL}`],
+    ["Timezone", TIMEZONE],
+    ["Weather", weather],
+    ["Location", "Indonesia"],
+  ]
+  const body = rows.map(([label, value]) => `${label.padEnd(12)}${value}`)
+
+  return (
+    <div className="my-2 overflow-hidden bg-black/60 font-mono text-xs text-foreground">
+      <pre className="overflow-x-auto">{drawAsciiBox(body, "today").join("\n")}</pre>
+    </div>
+  )
+}
+
 function getTerminalCommandResponse(cmdKey: string, lang: string = "id"): string {
   const isEn = lang === "en"
 
   switch (cmdKey) {
+    case "greeting":
+      return isEn
+        ? [
+          "```plain",
+          "I'm Muhammad Al Fakhreza Dwi Putra,",
+          "an Informatics Engineering student interested in",
+          "Software Engineering, Data, and Artificial Intelligence.",
+          "",
+          "Feel free to explore my work.",
+          "",
+          'Type "help" to see what you can discover.',
+          "```",
+        ].join("\n")
+        : [
+          "```plain",
+          "Saya Muhammad Al Fakhreza Dwi Putra,",
+          "mahasiswa Teknik Informatika yang tertarik pada",
+          "Software Engineering, Data, dan Artificial Intelligence.",
+          "",
+          "Silakan jelajahi karya saya.",
+          "",
+          'Ketik "help" untuk melihat apa yang bisa kamu temukan.',
+          "```",
+        ].join("\n")
+
     case "help":
       return isEn
         ? [
           "Here are the available commands:",
           "",
           "```help",
-          "> about        Display profile information, background, and technical focus.",
-          "> projects     Display featured projects, AI/ML systems, and web applications.",
-          "> skills       Display technical skills, programming languages, frameworks, and tools.",
-          "> experience   Display work experience, internships, cohort programs, and career history.",
-          "> contact      Display contact channels, social profiles, and direct message form.",
-          "> help         Display this list of terminal commands and their descriptions.",
+          "> about        profile information, background, and technical focus.",
+          "> projects     featured projects, AI/ML systems, and web applications.",
+          "> skills       technical skills, programming languages, frameworks, and tools.",
+          "> experience   work experience, internships, cohort programs, and career history.",
+          "> contact      contact channels, social profiles, and direct message form.",
+          "> email        interactive composer: fill sender, subject, and body one by one, then send.",
+          "> today        current date, time in WIB, and live weather for Indonesia.",
+          "> help         this list of terminal commands and their descriptions.",
+          "> clear        clear the terminal screen.",
           "```",
         ].join("\n")
         : [
@@ -552,7 +786,10 @@ function getTerminalCommandResponse(cmdKey: string, lang: string = "id"): string
           "> skills       Menampilkan keahlian teknis, bahasa pemrograman, framework, dan tools yang dikuasai.",
           "> experience   Menampilkan riwayat pengalaman kerja, magang, dan perjalanan karier profesional.",
           "> contact      Menampilkan informasi kontak langsung (email, media sosial) dan formulir kirim pesan.",
+          "> email        Komposer interaktif: isi pengirim, subjek, dan body satu per satu, lalu kirim.",
+          "> today        Tanggal dan waktu saat ini (WIB) beserta cuaca langsung Indonesia.",
           "> help         Menampilkan panduan daftar perintah terminal ini beserta penjelasannya.",
+          "> clear        Membersihkan layar terminal.",
           "```",
         ].join("\n")
 
@@ -842,11 +1079,11 @@ function TerminalWelcome({
 
   return (
     <div className="flex flex-col gap-3 font-mono select-none">
-      <pre className="overflow-x-auto text-[6px] leading-[1.15] text-white sm:text-[8px] md:text-[9.5px]">
+      <pre className="overflow-x-auto text-[6px] leading-[1.15] text-white sm:text-[8px] md:text-[12px]">
         {CLI_BANNER}
       </pre>
 
-      <div className="text-xs text-muted-foreground">
+      <div className="text-[12px] md:text-sm text-muted-foreground">
         <div className="flex gap-2">
           <span className="w-20 shrink-0 text-white">Name:</span>
           <span>Muhammad Al Fakhreza Dwi Putra</span>
@@ -928,11 +1165,13 @@ export function ChatWidgetPanel({
   const [input, setInput] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [loadingMessageIndex, setLoadingMessageIndex] = useState(0)
+  const [loadingKind, setLoadingKind] = useState<"chat" | "today">("chat")
 
   const [error, setError] = useState<string | null>(null)
 
   const [emailFlow, setEmailFlow] = useState<EmailFlowData>({
     step: "idle",
+    source: "form",
     name: "",
     email: "",
     rawMessage: "",
@@ -942,6 +1181,8 @@ export function ChatWidgetPanel({
   const [emailError, setEmailError] = useState<string | null>(null)
 
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const lastUserMessageRef = useRef<HTMLDivElement | null>(null)
+  const scrollContainerRef = useRef<HTMLDivElement | null>(null)
   const abortControllerRef = useRef<AbortController | null>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -987,18 +1228,31 @@ export function ChatWidgetPanel({
     }
   }, [])
 
-  // ── Scroll to bottom ────────────────────────────────────────────────────────
+  // ── Scroll behaviour ────────────────────────────────────────────────────────
+  // Instead of chasing the bottom while the answer streams in (which pushes the
+  // command and the first lines of the output out of view), we anchor the last
+  // submitted command at the top of the viewport and leave the scroll where it
+  // is, so both the input and its output stay readable.
+  const lastUserMessageId = messages.reduce<string | undefined>(
+    (acc, message) => (message.role === "user" ? message.id : acc),
+    undefined
+  )
+
   useEffect(() => {
-    // While tokens are streaming in every few milliseconds, a `smooth` scroll
-    // animation starts a fresh eased scroll on each append - the browser is
-    // perpetually catching up to content it has not rendered yet, which reads
-    // as jank and burns main-thread time. Snap (`auto`) keeps the view pinned
-    // to the latest token, and the discrete updates (send, email steps) still
-    // get the gentle smooth scroll.
-    messagesEndRef.current?.scrollIntoView({
-      behavior: isLoading ? "auto" : "smooth",
+    if (!lastUserMessageId) return
+    const container = scrollContainerRef.current
+    const element = lastUserMessageRef.current
+    if (!container || !element) return
+    // Scroll only the message list — never the page — so the footer/header of
+    // the site stay put while the command + its output become visible.
+    const delta =
+      element.getBoundingClientRect().top -
+      container.getBoundingClientRect().top
+    container.scrollTo({
+      top: Math.max(0, container.scrollTop + delta - 8),
+      behavior: "smooth",
     })
-  }, [messages, isLoading, emailFlow.step])
+  }, [lastUserMessageId])
 
   // ── Textarea auto-reset ─────────────────────────────────────────────────────
   useEffect(() => {
@@ -1013,8 +1267,10 @@ export function ChatWidgetPanel({
     isLoading &&
     latestMessage?.role === "assistant" &&
     latestMessage.content.length === 0
+  const loadingMessagePool =
+    loadingKind === "today" ? t.chat.todayLoadingMessages : t.chat.loadingMessages
   const loadingMessage =
-    t.chat.loadingMessages[loadingMessageIndex % t.chat.loadingMessages.length]
+    loadingMessagePool[loadingMessageIndex % loadingMessagePool.length]
 
   const isAgentThinking =
     isLoading || emailFlow.step === "formatting" || emailFlow.step === "sending"
@@ -1172,6 +1428,217 @@ export function ChatWidgetPanel({
     setEmailFlow((prev) => ({ ...prev, step: "idle" }))
   }
 
+  // ── Terminal email composer (`email` command) ────────────────────────────────
+  function composeStepPrompt(step: EmailFlowStep) {
+    if (step === "compose_subject") return t.chat.composeSubjectPrompt
+    if (step === "compose_body") return t.chat.composeBodyPrompt
+    if (step === "compose_send") {
+      return buildComposePreviewFor(
+        emailFlow.name,
+        emailFlow.email,
+        emailFlow.formattedSubject,
+        emailFlow.formattedMessage
+      )
+    }
+    return t.chat.composeSenderPrompt
+  }
+
+  async function startEmailCompose() {
+    if (emailFlow.step !== "idle") return
+    setEmailError(null)
+
+    const rl = checkRateLimit()
+    if (!rl.allowed) {
+      setIsChatActive(true)
+      await injectAssistantMessage(
+        t.chat.sendingLimitReached(
+          RATE_LIMIT_MAX,
+          formatResetTime(rl.resetInMs)
+        )
+      )
+      return
+    }
+
+    setIsChatActive(true)
+    setEmailFlow({
+      step: "compose_sender",
+      source: "compose",
+      name: "",
+      email: "",
+      rawMessage: "",
+      formattedSubject: "",
+      formattedMessage: "",
+    })
+    await injectAssistantMessage(
+      [t.chat.composeStart, "", t.chat.composeSenderPrompt].join("\n")
+    )
+  }
+
+  async function sendComposedEmail(
+    name: string,
+    email: string,
+    subject: string,
+    message: string
+  ) {
+    try {
+      const [res] = await Promise.all([
+        fetch("/api/contact", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            senderName: name,
+            senderEmail: email,
+            subject,
+            message,
+          }),
+        }),
+        new Promise((resolve) => setTimeout(resolve, 2000)),
+      ])
+
+      if (!res.ok) {
+        const payload = (await res.json().catch(() => null)) as {
+          error?: string
+        } | null
+        throw new Error(payload?.error ?? "Failed to send email.")
+      }
+
+      recordEmailSend()
+      const remaining = checkRateLimit().remaining
+      setEmailFlow((prev) => ({ ...prev, step: "done" }))
+      await injectAssistantMessage(
+        t.chat.emailSentSuccess(name, email, remaining)
+      )
+
+      setTimeout(() => {
+        setEmailFlow((prev) => ({
+          ...prev,
+          step: "idle",
+          name: "",
+          email: "",
+          rawMessage: "",
+          formattedSubject: "",
+          formattedMessage: "",
+        }))
+      }, 500)
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Failed to send email."
+      setEmailFlow((prev) => ({ ...prev, step: "idle" }))
+      await injectAssistantMessage(`[ERROR] ${msg}`)
+    }
+  }
+
+  // ── Handle one composed-input answer per step ────────────────────────────────
+  async function handleComposeInput(raw: string) {
+    const step = emailFlow.step
+    const value = raw.trim()
+    setInput("")
+
+    const echo = (text: string) =>
+      setMessages((prev) => [
+        ...prev,
+        { id: createId(), role: "user", content: text },
+      ])
+
+    if (value.toLowerCase() === "cancel" || value.toLowerCase() === "batal") {
+      echo(value)
+      setEmailFlow((prev) => ({ ...prev, step: "idle" }))
+      await injectAssistantMessage(t.chat.composeCancelled)
+      return
+    }
+
+    if (step === "compose_sender") {
+      if (!value) return
+      echo(value)
+      const parsed = parseSenderInput(value)
+      if (!parsed) {
+        await injectAssistantMessage(t.chat.composeSenderInvalid)
+        return
+      }
+      setEmailFlow((prev) => ({
+        ...prev,
+        name: parsed.name,
+        email: parsed.email,
+        step: "compose_subject",
+      }))
+      await injectAssistantMessage(t.chat.composeSubjectPrompt)
+      return
+    }
+
+    if (step === "compose_subject") {
+      if (!value) return
+      echo(value)
+      setEmailFlow((prev) => ({
+        ...prev,
+        formattedSubject: value,
+        step: "compose_body",
+      }))
+      await injectAssistantMessage(t.chat.composeBodyPrompt)
+      return
+    }
+
+    if (step === "compose_body") {
+      if (!value) return
+      echo(value)
+      setEmailFlow((prev) => ({
+        ...prev,
+        formattedMessage: value,
+        rawMessage: value,
+        step: "compose_send",
+      }))
+      await injectAssistantMessage(
+        buildComposePreviewFor(emailFlow.name, emailFlow.email, emailFlow.formattedSubject, value)
+      )
+      return
+    }
+
+    // Preview is showing: only `send` dispatches, only `cancel` discards.
+    if (step === "compose_send") {
+      if (!value) return
+      echo(value)
+      if (["send", "kirim", "confirm", "yes", "ya"].includes(value.toLowerCase())) {
+        await confirmSendComposed()
+      } else {
+        await injectAssistantMessage(t.chat.composeSendInvalid)
+      }
+    }
+  }
+
+  function buildComposePreviewFor(
+    name: string,
+    email: string,
+    subject: string,
+    message: string
+  ) {
+    return [
+      "```plain",
+      ...buildEmailPreviewBox(
+        {
+          title: t.chat.composePreviewTitle,
+          sender: t.chat.composePreviewSender,
+          subject: t.chat.composePreviewSubject,
+          body: t.chat.composePreviewBody,
+          status: t.chat.composePreviewStatus,
+          ready: t.chat.composePreviewReady,
+        },
+        name,
+        email,
+        subject,
+        message
+      ),
+      "",
+      t.chat.composeSendHint,
+      "```",
+    ].join("\n")
+  }
+
+  // ── Final Enter press on the compose_send step ───────────────────────────────
+  async function confirmSendComposed() {
+    const { name, email, formattedSubject, formattedMessage } = emailFlow
+    setInput("")
+    setEmailFlow((prev) => ({ ...prev, step: "sending" }))
+    await sendComposedEmail(name, email, formattedSubject, formattedMessage)
+  }
+
   // ── Listen for mailto-driven email flow triggers ────────────────────────────
   useEffect(() => {
     const handleStartEmailFlow = () => startEmailFlow()
@@ -1325,6 +1792,20 @@ export function ChatWidgetPanel({
       return
     }
 
+    if (cmdKey === "email") {
+      setIsChatActive(true)
+      const displayText = rawInput
+        ? rawInput.replace(/^[>/]\s*/, "").trim()
+        : cmdKey
+      setMessages((prev) => [
+        ...prev,
+        { id: createId(), role: "user", content: displayText },
+      ])
+      setInput("")
+      await startEmailCompose()
+      return
+    }
+
     setIsChatActive(true)
     const displayText = rawInput
       ? rawInput.replace(/^[>/]\s*/, "").trim()
@@ -1345,10 +1826,14 @@ export function ChatWidgetPanel({
     setMessages((prev) => [...prev, userMessage, assistantMessage])
     setInput("")
     setError(null)
+    setLoadingKind(cmdKey === "today" ? "today" : "chat")
     setIsLoading(true)
 
     try {
-      const responseText = getTerminalCommandResponse(cmdKey, language)
+      const responseText =
+        cmdKey === "today"
+          ? buildTodayResponse(language, await fetchTodayWeather())
+          : getTerminalCommandResponse(cmdKey, language)
       await appendAssistantContentFast(assistantId, responseText)
     } finally {
       setIsLoading(false)
@@ -1361,6 +1846,24 @@ export function ChatWidgetPanel({
 
     const trimmedInput = input.trim()
     if (!trimmedInput || isLoading) return
+
+    // While the `email` composer is active, every input answers the
+    // current step (sender → subject → body) instead of running commands.
+    // `clear`/`cls` and `help` are still allowed as passthrough commands.
+    if (isComposeStep(emailFlow.step)) {
+      const passthrough = parseTerminalCommand(trimmedInput)
+      if (passthrough === "clear" || passthrough === "help") {
+        if (passthrough === "help") {
+          await executeTerminalCommand(passthrough, trimmedInput)
+        } else {
+          setMessages([])
+        }
+        await injectAssistantMessage(composeStepPrompt(emailFlow.step))
+        return
+      }
+      await handleComposeInput(trimmedInput)
+      return
+    }
 
     // Intercept terminal commands (about, projects, skills, experience, contact, help, etc.)
     const cmdKey = parseTerminalCommand(trimmedInput)
@@ -1497,7 +2000,7 @@ export function ChatWidgetPanel({
 
       <form onSubmit={handleSubmit}>
         <div className="flex items-start gap-1.5">
-          <div className="flex shrink-0 items-center gap-1 pt-1 font-mono text-xs select-none">
+          <div className="flex shrink-0 items-center gap-1 pt-1 font-mono text-[12px] select-none">
             <span className="font-bold text-white">guest@alfakhrza</span>
             <span className="text-white/50">:</span>
             <span className="font-bold text-white">~</span>
@@ -1529,7 +2032,9 @@ export function ChatWidgetPanel({
             placeholder={
               emailFlow.step === "filling_form"
                 ? t.chat.writeMessageHere
-                : ""
+                : isComposeStep(emailFlow.step)
+                  ? t.chat.composeInputHint
+                  : ""
             }
             rows={emailFlow.step === "filling_form" ? 3 : 1}
             className={cn(
@@ -1554,7 +2059,7 @@ export function ChatWidgetPanel({
         <div className="mt-1 flex w-full min-w-0 items-center justify-between gap-2 pt-1">
           <span
             aria-hidden
-            className="min-w-0 truncate font-mono text-[10px] text-white/30 select-none"
+            className="min-w-0 truncate font-mono text-[12px] text-white/30 select-none"
           >
             [Enter] Run · [Ctrl+J] Newline
           </span>
@@ -1586,7 +2091,10 @@ export function ChatWidgetPanel({
 
       {/* Body */}
       <div className="relative flex min-h-0 min-w-0 flex-1 flex-col border-b border-line bg-black px-5 pt-8 pb-8 overflow-hidden font-mono sm:px-8 sm:pt-6 sm:pb-6">
-        <div className="min-h-0 min-w-0 grow overflow-x-hidden overflow-y-auto pr-1">
+        <div
+          ref={scrollContainerRef}
+          className="min-h-0 min-w-0 grow overflow-x-hidden overflow-y-auto pr-1"
+        >
           {messages.length === 0 && !isChatActive ? (
             <TerminalWelcome
               onSelectCommand={(cmd) => executeTerminalCommand(cmd)}
@@ -1596,7 +2104,11 @@ export function ChatWidgetPanel({
             if (m.role === "assistant" && !m.content) return null
 
             return (
-              <div key={m.id} className="font-mono text-xs sm:text-[13px]">
+              <div
+                key={m.id}
+                ref={m.id === lastUserMessageId ? lastUserMessageRef : undefined}
+                className="font-mono text-[12px] sm:text-[13px]"
+              >
                 {m.role === "user" ? (
                   <div className="flex items-baseline gap-2 leading-6">
                     <span
@@ -1620,9 +2132,11 @@ export function ChatWidgetPanel({
             )
           })}
 
-          {/* Email confirmation card */}
-          {(emailFlow.step === "confirming" ||
-            emailFlow.step === "sending") && (
+          {/* Email confirmation card — form flow only; the composer flow
+              already showed its ASCII preview before sending */}
+          {emailFlow.source === "form" &&
+            (emailFlow.step === "confirming" ||
+              emailFlow.step === "sending") && (
               <EmailConfirmCard
                 data={emailFlow}
                 onConfirm={handleEmailConfirm}
@@ -1681,7 +2195,7 @@ export function ChatWidgetPanel({
         </div>
 
         {/* Footer */}
-        <div className="mt-2 flex shrink-0 items-center justify-between gap-3 text-[10px] leading-none text-muted-foreground select-none">
+        <div className="mt-2 flex shrink-0 items-center justify-between gap-3 text-[12px] leading-none text-muted-foreground select-none">
           <div className="flex items-center gap-2">
             <span className="bg-white px-2 py-1 text-black">
               portfolio-cli · interactive mode
@@ -1699,7 +2213,7 @@ export function ChatWidgetPanel({
     return (
       <div
         ref={inlineRef}
-        className="relative z-1 -mt-px flex max-h-[calc(100dvh-3.5rem)] min-w-0 flex-col overflow-hidden border-x border-line bg-card font-ibm-plex-mono max-md:border-x-0"
+        className="relative z-1 -mt-px flex h-[calc(100dvh-3.5rem)] min-w-0 flex-col overflow-hidden border-x border-line bg-card font-ibm-plex-mono max-md:border-x-0"
       >
         {panelContent}
       </div>

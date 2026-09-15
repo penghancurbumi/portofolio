@@ -116,7 +116,8 @@ const dictionary = {
     },
     blog: {
       emptyTitle: "No articles published yet",
-      emptyDescription: "New posts and writings will appear here once published.",
+      emptyDescription:
+        "New posts and writings will appear here once published.",
     },
     chat: {
       inputPlaceholder: "How can I help you?",
@@ -132,7 +133,7 @@ const dictionary = {
       editEmail: "Edit Email",
       sendEmail: "Send Email",
       sending: "Sending...",
-      sendEmailToZickrian: "Send Email to Zickrian",
+      sendEmailToZickrian: "Send Email",
       yourName: "Your name",
       yourEmail: "Your email",
       writeMessageHere: "Write your message here...",
@@ -143,6 +144,30 @@ const dictionary = {
         "YOU'RE GETTING CLOSE TO YOUR LIMIT\nCONSIDER SLOWING DOWN SPENDING",
       budgetHealthy: "YOUR BUDGET IS LOOKING HEALTHY.\nKEEP IT UP.",
       invalidEmail: "Invalid email format.",
+      composeStart: "Email composer started. Fill in each input one by one.",
+      composeSenderPrompt:
+        "Step 1/3 — Sender: enter your name & email (e.g. John <john@example.com>) or just your email address. Type cancel to abort.",
+      composeSenderInvalid:
+        "[ERROR] That sender email doesn't look valid. Try again, or type cancel to abort.",
+      composeSubjectPrompt: "Step 2/3 — Subject: enter the email subject.",
+      composeBodyPrompt: "Step 3/3 — Body: enter the message body.",
+      composePreviewTitle: "email preview",
+      composePreviewSender: "Sender",
+      composePreviewSubject: "Subject",
+      composePreviewBody: "Body",
+      composePreviewStatus: "Status",
+      composePreviewReady: "Ready to send",
+      composeSendHint:
+        "> send to deliver this message\n> cancel to discard",
+      composeSendInvalid:
+        "[ERROR] Type send to deliver this message or cancel to discard it.",
+      composeCancelled: "Email composer cancelled. Nothing was sent.",
+      composeInputHint: "type your answer... (cancel to abort)",
+      todayLoadingMessages: [
+        "Syncing local clock...",
+        "Fetching live weather for Indonesia...",
+        "Calculating WIB time...",
+      ],
       loadingMessages: [
         "Fetching portfolio data...",
         "Selecting the most relevant context...",
@@ -162,11 +187,11 @@ const dictionary = {
         "Finalizing transmission...",
       ],
       emailPreviewReady:
-        "Here is a preview of your formatted email. Please review and confirm before sending 👇",
+        "Here is a preview of your formatted email. Please review and confirm before sending",
       sendingLimitReached: (limit: number, wait: string) =>
-        `⏳ **Sending limit reached.**\n\nYou've already sent ${limit} emails in the last hour. Try again in **${wait}**.`,
+        `[RATE LIMIT] Sending limit reached.\n\nYou've already sent ${limit} emails in the last hour. Try again in **${wait}**.`,
       emailSentSuccess: (name: string, email: string, remaining: number) =>
-        `✅ **Email sent successfully!**\n\nThe message from **${name}** has been sent to Zickrian. You will receive a confirmation at **${email}**.\n\nThanks for reaching out! 🙌${remaining > 0 ? `\n\n🚀 *Remaining email quota: **${remaining}x** in this hour.*` : ""}`,
+        `[SENT] Email delivered successfully.\n\n  from     ${name} <${email}>\n  to       Muhammad Al Fakhreza Dwi Putra\n  status   250 OK\n  quota    ${remaining > 0 ? `${remaining}x remaining this hour` : "exhausted for this hour"}\n\nA confirmation copy has been sent to ${email}.`,
     },
   },
   id: {
@@ -283,7 +308,8 @@ const dictionary = {
     },
     blog: {
       emptyTitle: "Belum ada artikel yang dipublikasikan",
-      emptyDescription: "Tulisan dan artikel baru akan muncul di sini setelah dipublikasikan.",
+      emptyDescription:
+        "Tulisan dan artikel baru akan muncul di sini setelah dipublikasikan.",
     },
     chat: {
       inputPlaceholder: "Ada yang bisa dibantu?",
@@ -299,7 +325,7 @@ const dictionary = {
       editEmail: "Ubah Email",
       sendEmail: "Kirim Email",
       sending: "Mengirim...",
-      sendEmailToZickrian: "Kirim Email ke Zickrian",
+      sendEmailToZickrian: "Kirim Email",
       yourName: "Nama kamu",
       yourEmail: "Email kamu",
       writeMessageHere: "Tulis pesanmu di sini...",
@@ -310,6 +336,31 @@ const dictionary = {
         "BUDGET KAMU HAMPIR HABIS\nPERTIMBANGKAN UNTUK MENGURANGI PENGGUNAAN",
       budgetHealthy: "BUDGET KAMU MASIH SEHAT.\nLANJUTKAN.",
       invalidEmail: "Format email tidak valid.",
+      composeStart: "Komposer email dimulai. Isi setiap input satu per satu.",
+      composeSenderPrompt:
+        "Langkah 1/3 — Pengirim: masukkan nama & email (contoh: John <john@example.com>) atau cukup alamat email kamu. Ketik cancel untuk membatalkan.",
+      composeSenderInvalid:
+        "[ERROR] Email pengirim tidak valid. Coba lagi, atau ketik cancel untuk membatalkan.",
+      composeSubjectPrompt: "Langkah 2/3 — Subjek: masukkan subjek email.",
+      composeBodyPrompt: "Langkah 3/3 — Body: masukkan isi pesan.",
+      composePreviewTitle: "pratinjau email",
+      composePreviewSender: "Pengirim",
+      composePreviewSubject: "Subjek",
+      composePreviewBody: "Isi",
+      composePreviewStatus: "Status",
+      composePreviewReady: "Siap dikirim",
+      composeSendHint:
+        "> send untuk mengirim pesan ini\n> cancel untuk membatalkan",
+      composeSendInvalid:
+        "[ERROR] Ketik send untuk mengirim pesan ini atau cancel untuk membatalkannya.",
+      composeCancelled:
+        "Komposer email dibatalkan. Tidak ada email yang dikirim.",
+      composeInputHint: "ketik jawabanmu... (cancel untuk membatalkan)",
+      todayLoadingMessages: [
+        "Menyelaraskan jam lokal...",
+        "Mengambil cuaca langsung Indonesia...",
+        "Menghitung waktu WIB...",
+      ],
       loadingMessages: [
         "Mengambil data portofolio...",
         "Memilih konteks yang paling relevan...",
@@ -329,11 +380,11 @@ const dictionary = {
         "Menyelesaikan transmisi...",
       ],
       emailPreviewReady:
-        "Ini pratinjau email yang sudah diformat. Silakan tinjau dan konfirmasi sebelum dikirim 👇",
+        "Ini pratinjau email yang sudah diformat. Silakan tinjau dan konfirmasi sebelum dikirim",
       sendingLimitReached: (limit: number, wait: string) =>
-        `⏳ **Batas pengiriman tercapai.**\n\nKamu sudah mengirim ${limit} email dalam satu jam terakhir. Coba lagi dalam **${wait}**.`,
+        `[RATE LIMIT] Batas pengiriman tercapai.\n\nKamu sudah mengirim ${limit} email dalam satu jam terakhir. Coba lagi dalam **${wait}**.`,
       emailSentSuccess: (name: string, email: string, remaining: number) =>
-        `✅ **Email berhasil terkirim!**\n\nPesan dari **${name}** telah dikirim ke Zickrian. Kamu akan menerima konfirmasi di **${email}**.\n\nTerima kasih sudah menghubungi! 🙌${remaining > 0 ? `\n\n🚀 *Sisa kuota email: **${remaining}x** dalam satu jam ini.*` : ""}`,
+        `[SENT] Email berhasil terkirim.\n\n  dari     ${name} <${email}>\n  kepada   Muhammad Al Fakhreza Dwi Putra\n  status   250 OK\n  kuota    ${remaining > 0 ? `sisa ${remaining}x dalam satu jam ini` : "habis untuk satu jam ini"}\n\nSalinan konfirmasi telah dikirim ke ${email}.`,
     },
   },
 } as const satisfies Record<Language, unknown>
