@@ -58,6 +58,10 @@ export type Project = {
   impact: string[]
   /** Indonesian translation of `impact` */
   impactId?: string[]
+  /** Planned next steps / roadmap for the project. */
+  future?: string[]
+  /** Indonesian translation of `future` */
+  futureId?: string[]
   collaboration: ProjectCollaboration
   /** Optional rich description; Markdown and line breaks supported. */
   description?: string

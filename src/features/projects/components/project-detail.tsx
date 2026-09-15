@@ -235,6 +235,22 @@ export function ProjectDetail({ project }: { project: Project }) {
         </ul>
       </Section>
 
+      {/* Future / next steps */}
+      {project.future && project.future.length > 0 && (
+        <Section title={t.projectDetail.future}>
+          <ul className="space-y-3">
+            {l(project.future, project.futureId).map((item, i) => (
+              <li key={i} className="flex items-baseline gap-3 text-sm leading-7">
+                <span className="shrink-0 font-ibm-plex-mono text-xs text-muted-foreground">
+                  →
+                </span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </Section>
+      )}
+
       {/* Tech Stack */}
       <Section title={t.projectDetail.stack}>
         <div className="flex flex-wrap gap-1.5">
