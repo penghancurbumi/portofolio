@@ -50,6 +50,14 @@
   font-weight: 400 700;
 }
 
+@font-face {
+  font-family: "PixelifySans";
+  src: url("/fonts/pixelify-sans-latin.woff2") format("woff2");
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400 700;
+}
+
 /* Inlined from scroll-fade-effect.css - eliminates one render-blocking CSS request */
 @layer base {
   @keyframes show-top-mask {
@@ -280,12 +288,18 @@
   --color-selection: var(--selection);
   --color-selection-foreground: var(--selection-foreground);
 
+  --color-term-bg: var(--term-bg);
+  --color-term-fg: var(--term-fg);
+  --color-term-surface: var(--term-surface);
+  --color-term-line: var(--term-line);
+
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
   --font-serif: var(--font-serif);
 
   --font-handwritten: var(--font-handwritten);
   --font-ibm-plex-mono: "IBMPlexMono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-pixel: "PixelifySans", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   --font-heading: var(--font-sans);
 
   --color-sidebar-ring: var(--sidebar-ring);
@@ -646,6 +660,8 @@
     Menlo, Monaco, "Liberation Mono", "DejaVu Sans Mono", "Courier New",
     monospace;
   --font-handwritten: "Caveat", "Caveat Fallback", cursive;
+  --font-pixel: "PixelifySans", ui-monospace, "SFMono-Regular", Menlo, Monaco,
+    Consolas, monospace;
 
   /* Height of the fixed fade/blur overlay at the bottom of the viewport */
   --fade-bottom-height: --spacing(24);
@@ -701,6 +717,20 @@
   --sidebar-accent-foreground: #09090b;
   --sidebar-border: #e5e7eb;
   --sidebar-ring: #9ca3af;
+
+  /* Terminal surface. The chat panel is a terminal, so it inverts with the
+     page: light mode paints a white terminal with dark ink, dark mode paints
+     the classic black terminal with light ink. Registered as `--color-term-*`
+     in @theme so the opacity modifier (`bg-term-fg/10`) works on every part. */
+  --term-bg: #ffffff;
+  --term-fg: #09090b;
+  --term-surface: #f4f4f5;
+  --term-line: #d4d4d8;
+
+  /* Diagonal hatch tint used by the section-panel headers. Dark ink on the
+     light theme, light ink on the dark theme. Not registered in @theme: it is
+     only ever read inside an arbitrary background, never as a utility. */
+  --panel-hatch: rgb(0 0 0 / 9%);
 
   --expo-out: linear(0 0%,
       0.1684 2.66%,
@@ -773,6 +803,14 @@
   --sidebar-accent-foreground: #ededed;
   --sidebar-border: #222226;
   --sidebar-ring: #52525b;
+
+  /* Dark mode: the classic black terminal with light ink. */
+  --term-bg: #000000;
+  --term-fg: #ededed;
+  --term-surface: #141416;
+  --term-line: #27272a;
+
+  --panel-hatch: rgb(255 255 255 / 9%);
 }
 
 @layer base {

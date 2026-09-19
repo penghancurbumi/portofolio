@@ -86,19 +86,6 @@ export function AsciiBanner({
           }`}
       />
 
-      {/* 2. CRT Scanlines Overlay */}
-      {scanlines && (
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 z-10 bg-[linear-gradient(to_bottom,transparent_50%,rgba(0,0,0,0.35)_51%)] bg-[length:100%_3px] opacity-30 mix-blend-overlay"
-        />
-      )}
-
-      {/* 3. Inset Shadow Frame */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 z-5 shadow-[inset_0_0_24px_rgba(0,0,0,0.4),inset_0_1px_3px_rgba(0,0,0,0.3),inset_0_-1px_3px_rgba(0,0,0,0.3)]"
-      />
     </div>
   )
 }

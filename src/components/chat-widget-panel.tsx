@@ -193,7 +193,7 @@ function AsciiSpinner() {
     return () => clearInterval(interval)
   }, [])
   return (
-    <span className="mr-1.5 inline-block w-3 text-center font-mono text-xs font-bold text-white">
+    <span className="mr-1.5 inline-block w-3 text-center font-mono text-xs font-bold text-term-fg">
       {SPINNER_FRAMES[frameIndex]}
     </span>
   )
@@ -231,10 +231,10 @@ function EmailConfirmCard({
   }
 
   return (
-    <div className="my-2 flex flex-col gap-2 rounded border border-white/40 bg-black/70 p-3 font-mono text-xs shadow-inner backdrop-blur-md">
+    <div className="my-2 flex flex-col gap-2 rounded border border-term-fg/40 bg-term-surface p-3 font-mono text-xs shadow-inner backdrop-blur-md">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-white/20 pb-2 text-[11px]">
-        <div className="flex items-center gap-1.5 font-bold text-white">
+      <div className="flex items-center justify-between border-b border-term-fg/20 pb-2 text-[11px]">
+        <div className="flex items-center gap-1.5 font-bold text-term-fg">
           <span>[CONFIRM]</span>
           <span>EMAIL PREVIEW &amp; DISPATCH</span>
         </div>
@@ -246,7 +246,7 @@ function EmailConfirmCard({
         <div className="flex items-center gap-2 border-b border-line/40 pb-1.5">
           <span className="w-16 font-semibold text-muted-foreground">FROM:</span>
           <div className="flex-1 truncate font-mono text-foreground">
-            {data.name} <span className="text-white/80">&lt;{data.email}&gt;</span>
+            {data.name} <span className="text-term-fg/80">&lt;{data.email}&gt;</span>
           </div>
         </div>
 
@@ -255,7 +255,7 @@ function EmailConfirmCard({
           {isEditing ? (
             <input
               name="subject"
-              className="flex-1 border-b border-white/60 bg-transparent font-mono text-foreground focus:outline-none"
+              className="flex-1 border-b border-term-fg/60 bg-transparent font-mono text-foreground focus:outline-none"
               value={editedSubject}
               onChange={(e) => setEditedSubject(e.target.value)}
             />
@@ -272,12 +272,12 @@ function EmailConfirmCard({
             <textarea
               name="message"
               rows={Math.max(3, editedMessage.split("\n").length)}
-              className="w-full resize-y rounded border border-line bg-black/40 p-2 font-mono text-foreground focus:border-white/60 focus:outline-none"
+              className="w-full resize-y rounded border border-line bg-term-surface p-2 font-mono text-foreground focus:border-term-fg/60 focus:outline-none"
               value={editedMessage}
               onChange={(e) => setEditedMessage(e.target.value)}
             />
           ) : (
-            <div className="max-h-50 w-full overflow-y-auto whitespace-pre-wrap rounded border border-line/40 bg-black/30 p-2 font-mono leading-relaxed text-foreground/90">
+            <div className="max-h-50 w-full overflow-y-auto whitespace-pre-wrap rounded border border-line/40 bg-term-surface p-2 font-mono leading-relaxed text-foreground/90">
               {data.formattedMessage}
             </div>
           )}
@@ -299,7 +299,7 @@ function EmailConfirmCard({
             <Button
               onClick={handleSave}
               size="sm"
-              className="h-7 rounded border border-white/50 bg-white/20 px-3 font-mono text-[11px] font-semibold text-white hover:bg-white/30"
+              className="h-7 rounded border border-term-fg/50 bg-term-fg/20 px-3 font-mono text-[11px] font-semibold text-term-fg hover:bg-term-fg/30"
             >
               [Save Changes]
             </Button>
@@ -329,7 +329,7 @@ function EmailConfirmCard({
               onClick={onConfirm}
               disabled={isSending}
               size="sm"
-              className="flex h-7 items-center gap-1.5 rounded border border-white/50 bg-white/20 px-3 font-mono text-[11px] font-semibold text-white hover:border-white hover:bg-white/30 active:scale-95 disabled:opacity-40"
+              className="flex h-7 items-center gap-1.5 rounded border border-term-fg/50 bg-term-fg/20 px-3 font-mono text-[11px] font-semibold text-term-fg hover:border-term-fg hover:bg-term-fg/30 active:scale-95 disabled:opacity-40"
             >
               {isSending ? (
                 <>
@@ -367,7 +367,7 @@ const MarkdownRenderer = memo(({ content }: { content: string }) => {
             </p>
           ),
           strong: ({ children }) => (
-            <strong className="font-mono font-semibold text-white">
+            <strong className="font-mono font-semibold text-term-fg">
               {children}
             </strong>
           ),
@@ -383,25 +383,25 @@ const MarkdownRenderer = memo(({ content }: { content: string }) => {
             </ol>
           ),
           li: ({ children }) => (
-            <li className="relative list-none pl-3.5 font-mono leading-relaxed wrap-break-word text-foreground/90 before:absolute before:left-0 before:font-bold before:text-white before:content-['›']">
+            <li className="relative list-none pl-3.5 font-mono leading-relaxed wrap-break-word text-foreground/90 before:absolute before:left-0 before:font-bold before:text-term-fg before:content-['›']">
               {children}
             </li>
           ),
           hr: () => <hr className="my-2.5 border-dashed border-line/60" />,
           blockquote: ({ children }) => (
-            <blockquote className="my-1.5 rounded-r border-l-2 border-white/60 bg-white/5 px-2.5 py-1 font-mono text-xs text-foreground/90">
+            <blockquote className="my-1.5 rounded-r border-l-2 border-term-fg/60 bg-term-fg/5 px-2.5 py-1 font-mono text-xs text-foreground/90">
               {children}
             </blockquote>
           ),
           table: ({ children }) => (
-            <div className="my-2 w-full overflow-x-auto rounded border border-line/60 bg-black/40 pb-1">
+            <div className="my-2 w-full overflow-x-auto rounded border border-line/60 bg-term-surface pb-1">
               <table className="w-full border-collapse font-mono text-xs text-foreground/90">
                 {children}
               </table>
             </div>
           ),
           thead: ({ children }) => (
-            <thead className="border-b border-line bg-muted/60 font-bold text-white">
+            <thead className="border-b border-line bg-muted/60 font-bold text-term-fg">
               {children}
             </thead>
           ),
@@ -427,19 +427,19 @@ const MarkdownRenderer = memo(({ content }: { content: string }) => {
             </a>
           ),
           h1: ({ children }) => (
-            <h2 className="mt-3 mb-1 flex items-center gap-1.5 font-mono text-sm font-bold uppercase tracking-wider text-white first:mt-0">
+            <h2 className="mt-3 mb-1 flex items-center gap-1.5 font-mono text-sm font-bold uppercase tracking-wider text-term-fg first:mt-0">
               <span className="select-none text-muted-foreground/60">[#]</span>
               {children}
             </h2>
           ),
           h2: ({ children }) => (
-            <h2 className="mt-3 mb-1 flex items-center gap-1.5 font-mono text-sm font-bold uppercase tracking-wider text-white first:mt-0">
+            <h2 className="mt-3 mb-1 flex items-center gap-1.5 font-mono text-sm font-bold uppercase tracking-wider text-term-fg first:mt-0">
               <span className="select-none text-muted-foreground/60">[#]</span>
               {children}
             </h2>
           ),
           h3: ({ children }) => (
-            <h3 className="mt-2.5 mb-1 flex items-center gap-1.5 font-mono text-xs font-bold uppercase tracking-wider text-white first:mt-0">
+            <h3 className="mt-2.5 mb-1 flex items-center gap-1.5 font-mono text-xs font-bold uppercase tracking-wider text-term-fg first:mt-0">
               <span className="select-none text-muted-foreground/60">[::]</span>
               {children}
             </h3>
@@ -458,13 +458,13 @@ const MarkdownRenderer = memo(({ content }: { content: string }) => {
             if (lang === "widget" && codeString === "contact-form") {
               return (
                 <div className="animate-in fade-in slide-in-from-bottom-2 my-2 font-mono duration-300">
-                  <div className="relative flex flex-col justify-between gap-3 overflow-hidden rounded border border-white/40 bg-black/60 p-3 shadow-inner sm:flex-row sm:items-center">
+                  <div className="relative flex flex-col justify-between gap-3 overflow-hidden rounded border border-term-fg/40 bg-term-surface p-3 shadow-inner sm:flex-row sm:items-center">
                     <div className="flex items-center gap-3">
-                      <div className="flex size-9 shrink-0 items-center justify-center rounded border border-white/30 bg-white/10 text-white">
+                      <div className="flex size-9 shrink-0 items-center justify-center rounded border border-term-fg/30 bg-term-fg/10 text-term-fg">
                         <MailIcon className="size-4" />
                       </div>
                       <div className="flex flex-col gap-0.5">
-                        <div className="text-xs font-bold tracking-wide text-white uppercase">
+                        <div className="text-xs font-bold tracking-wide text-term-fg uppercase">
                           [FORM] DIRECT MESSAGE
                         </div>
                         <div className="text-[11px] text-muted-foreground">
@@ -476,7 +476,7 @@ const MarkdownRenderer = memo(({ content }: { content: string }) => {
                       onClick={() =>
                         window.dispatchEvent(new CustomEvent("startEmailFlow"))
                       }
-                      className="flex h-8 shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded border border-white/50 bg-white/20 px-3 font-mono text-xs font-semibold text-white transition-all hover:border-white hover:bg-white/30 active:scale-95"
+                      className="flex h-8 shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded border border-term-fg/50 bg-term-fg/20 px-3 font-mono text-xs font-semibold text-term-fg transition-all hover:border-term-fg hover:bg-term-fg/30 active:scale-95"
                     >
                       <span>./send-message.sh</span>
                       <ArrowUpRightIcon className="size-3" />
@@ -498,8 +498,8 @@ const MarkdownRenderer = memo(({ content }: { content: string }) => {
 
             if (match) {
               return (
-                <div className="my-2 overflow-hidden rounded border border-line bg-black/60 font-mono text-xs text-foreground">
-                  <div className="border-b border-line/60 bg-muted/30 px-3 py-1 font-mono text-[10px] text-white">
+                <div className="my-2 overflow-hidden rounded border border-line bg-term-surface font-mono text-xs text-foreground">
+                  <div className="border-b border-line/60 bg-muted/30 px-3 py-1 font-mono text-[10px] text-term-fg">
                     {lang}
                   </div>
                   <pre className="overflow-x-auto p-3">
@@ -510,7 +510,7 @@ const MarkdownRenderer = memo(({ content }: { content: string }) => {
             }
 
             return (
-              <code className="rounded border border-white/20 bg-white/5 px-1.5 py-0.5 font-mono text-[11px] text-white">
+              <code className="rounded border border-term-fg/20 bg-term-fg/5 px-1.5 py-0.5 font-mono text-[11px] text-term-fg">
                 {children}
               </code>
             )
@@ -526,14 +526,70 @@ MarkdownRenderer.displayName = "MarkdownRenderer"
 
 // ─── CLI terminal chrome ──────────────────────────────────────────────────────
 
-const CLI_BANNER = [
+const CLI_BANNER_LINES = [
   "█████╗ ██╗     ███████╗ █████╗ ██╗  ██╗██╗  ██╗██████╗ ███████╗███████╗ █████╗ ",
   "██╔══██╗██║     ██╔════╝██╔══██╗██║ ██╔╝██║  ██║██╔══██╗██╔════╝╚══███╔╝██╔══██╗",
   "███████║██║     █████╗  ███████║█████╔╝ ███████║██████╔╝█████╗    ███╔╝ ███████║",
   "██╔══██║██║     ██╔══╝  ██╔══██║██╔═██╗ ██╔══██║██╔══██╗██╔══╝   ███╔╝  ██╔══██║",
   "██║  ██║███████╗██║     ██║  ██║██║  ██╗██║  ██║██║  ██║███████╗███████╗██║  ██║",
   "╚═╝  ╚═╝╚══════╝╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚══════╝╚═╝  ╚═╝",
-].join("\n")
+]
+
+/**
+ * The banner is drawn as an SVG grid rather than a <pre> of block characters.
+ *
+ * Why: `GeistMono` ships as a latin-only subset, so the box-drawing glyphs
+ * (█ ╔ ═ ╗ ║ …) fall back to whatever mono font the OS provides. That fallback
+ * has different advance widths than GeistMono, so every row drifted a little
+ * more than the one above it and the whole logo looked scrambled. Positioning
+ * each glyph on an explicit SVG grid removes the font metric question entirely.
+ */
+function CliBanner({ className }: { className?: string }) {
+  const cols = Math.max(...CLI_BANNER_LINES.map((line) => line.length))
+  const rows = CLI_BANNER_LINES.length
+
+  // One character cell. `cw`/`ch` are in user units; the SVG scales to fit its
+  // container, so a single grid works at every breakpoint.
+  const cw = 1
+  const ch = 2
+  const width = cols * cw
+  const height = rows * ch
+
+  return (
+    <svg
+      className={className}
+      viewBox={`0 0 ${width} ${height}`}
+      preserveAspectRatio="xMinYMin meet"
+      role="img"
+      aria-label="Alfakhreza"
+      fill="currentColor"
+    >
+      {CLI_BANNER_LINES.map((line, row) => {
+        // Trailing spaces only pad the array; rendering them is wasted work.
+        const cells = Array.from(line.replace(/\s+$/, ""))
+        return cells.map((char, col) =>
+          char === " " ? null : (
+            <text
+              key={`${row}-${col}`}
+              x={col * cw}
+              y={row * ch}
+              // textLength + lengthAdjust pins every glyph to exactly one cell,
+              // so a fallback font cannot widen a column regardless of which
+              // mono face the OS resolves for the box-drawing codepoints.
+              textLength={cw}
+              lengthAdjust="spacingAndGlyphs"
+              dominantBaseline="text-before-edge"
+              fontSize={ch}
+              fontFamily="var(--font-mono)"
+            >
+              {char}
+            </text>
+          )
+        )
+      })}
+    </svg>
+  )
+}
 
 const COMMAND_ALIASES: Record<string, string> = {
   about: "about",
@@ -725,7 +781,7 @@ function TodayLiveBox({ weather }: { weather: string }) {
   const body = rows.map(([label, value]) => `${label.padEnd(12)}${value}`)
 
   return (
-    <div className="my-2 overflow-hidden bg-black/60 font-mono text-xs text-foreground">
+    <div className="my-2 overflow-hidden bg-term-surface font-mono text-xs text-foreground">
       <pre className="overflow-x-auto">{drawAsciiBox(body, "today").join("\n")}</pre>
     </div>
   )
@@ -798,7 +854,7 @@ function getTerminalCommandResponse(cmdKey: string, lang: string = "id"): string
         ? [
           "```plain",
           "MUHAMMAD AL FAKHREZA DWI PUTRA",
-          "Software Engineer · Data · Artificial Intelligence",
+          "Fullstack Developer · Data · Artificial Intelligence",
           "",
           "Location:   Indonesia",
           "Education:  Computer Science Student",
@@ -821,7 +877,7 @@ function getTerminalCommandResponse(cmdKey: string, lang: string = "id"): string
         : [
           "```plain",
           "MUHAMMAD AL FAKHREZA DWI PUTRA",
-          "Software Engineer · Data · Artificial Intelligence",
+          "Fullstack Developer · Data · Artificial Intelligence",
           "",
           "Lokasi:       Indonesia",
           "Pendidikan:   Mahasiswa Teknik Informatika",
@@ -1035,7 +1091,7 @@ function BlinkCursor({ className }: { className?: string }) {
     <span
       aria-hidden
       className={cn(
-        "inline-block h-[1.05em] w-[0.6em] shrink-0 translate-y-[0.12em] animate-terminal-blink bg-white",
+        "inline-block h-[1.05em] w-[0.6em] shrink-0 translate-y-[0.12em] animate-terminal-blink bg-term-fg",
         className
       )}
     />
@@ -1079,62 +1135,60 @@ function TerminalWelcome({
 
   return (
     <div className="flex flex-col gap-3 font-mono select-none">
-      <pre className="overflow-x-auto text-[6px] leading-[1.15] text-white sm:text-[8px] md:text-[12px]">
-        {CLI_BANNER}
-      </pre>
+      <CliBanner className="h-auto w-full max-w-[520px] text-term-fg" />
 
-      <div className="text-[12px] md:text-sm text-muted-foreground">
+      <div className="text-[10px] md:text-[12px] md:text-sm text-muted-foreground">
         <div className="flex gap-2">
-          <span className="w-20 shrink-0 text-white">Name:</span>
+          <span className="w-20 shrink-0 text-term-fg">Name:</span>
           <span>Muhammad Al Fakhreza Dwi Putra</span>
         </div>
 
         <div className="flex gap-2">
-          <span className="w-20 shrink-0 text-white">Role:</span>
-          <span>Software Engineer · Data · AI</span>
+          <span className="w-20 shrink-0 text-term-fg">Role:</span>
+          <span>Fullstack Developer · Data · AI</span>
         </div>
 
         <div className="flex gap-2">
-          <span className="w-20 shrink-0 text-white">Education:</span>
+          <span className="w-20 shrink-0 text-term-fg">Education:</span>
           <span>Informatics Engineering</span>
         </div>
 
         <div className="flex gap-2">
-          <span className="w-20 shrink-0 text-white">Location:</span>
+          <span className="w-20 shrink-0 text-term-fg">Location:</span>
           <span>Indonesia</span>
         </div>
 
         <div className="flex gap-2">
-          <span className="w-20 shrink-0 text-white">System:</span>
+          <span className="w-20 shrink-0 text-term-fg">System:</span>
           <span>Portfolio CLI</span>
         </div>
 
         <div className="flex gap-2">
-          <span className="w-20 shrink-0 text-white">Version:</span>
+          <span className="w-20 shrink-0 text-term-fg">Version:</span>
           <span>1.0.0</span>
         </div>
 
         <div className="flex gap-2">
-          <span className="w-20 shrink-0 text-white">Branch:</span>
+          <span className="w-20 shrink-0 text-term-fg">Branch:</span>
           <span>{BUILD_INFO.branch || "main"}</span>
         </div>
 
         <div className="flex gap-2">
-          <span className="w-20 shrink-0 text-white">Commit:</span>
+          <span className="w-20 shrink-0 text-term-fg">Commit:</span>
           <span className="min-w-0 truncate">{commitLabel}</span>
         </div>
 
         <div className="flex gap-2">
-          <span className="w-20 shrink-0 text-white">Time:</span>
+          <span className="w-20 shrink-0 text-term-fg">Time:</span>
           <span>{clock}</span>
         </div>
 
         <div className="flex gap-2">
-          <span className="w-20 shrink-0 text-white">Status:</span>
+          <span className="w-20 shrink-0 text-term-fg">Status:</span>
           <span className="inline-flex items-center gap-1.5">
             <span
               aria-hidden
-              className={`inline-block size-2 rounded-full ${online ? "animate-pulse bg-white" : "bg-muted-foreground/40"
+              className={`inline-block size-2 rounded-full ${online ? "animate-pulse bg-term-fg" : "bg-muted-foreground/40"
                 }`}
             />
             {online ? "Online" : "Offline"}
@@ -1142,8 +1196,8 @@ function TerminalWelcome({
         </div>
       </div>
 
-      <div className="text-xs text-muted-foreground">
-        Type <span className="font-bold text-white">help</span> for available commands.
+      <div className="text-[10px] md:text-[12px] text-muted-foreground">
+        Type <span className="font-bold text-term-fg">help</span> for available commands.
       </div>
     </div>
   )
@@ -1970,7 +2024,7 @@ export function ChatWidgetPanel({
 
   // ── Form Element ─────────────────────────────────────────────────────────
   const FormElement = (
-    <div className="bg-black/40 py-2">
+    <div className="bg-term-surface py-2 px-1">
       {emailFlow.step === "filling_form" && (
         <div className="mb-2 flex flex-col gap-1.5 border-b border-line/40 pb-2">
           <input
@@ -2001,10 +2055,10 @@ export function ChatWidgetPanel({
       <form onSubmit={handleSubmit}>
         <div className="flex items-start gap-1.5">
           <div className="flex shrink-0 items-center gap-1 pt-1 font-mono text-[12px] select-none">
-            <span className="font-bold text-white">guest@alfakhrza</span>
-            <span className="text-white/50">:</span>
-            <span className="font-bold text-white">~</span>
-            <span className="font-bold text-white">$</span>
+            <span className="font-bold text-term-fg">guest@alfakhrza</span>
+            <span className="text-term-fg/50">:</span>
+            <span className="font-bold text-term-fg">~</span>
+            <span className="font-bold text-term-fg">$</span>
             {showCursor && <BlinkCursor className="ml-1" />}
           </div>
 
@@ -2059,7 +2113,7 @@ export function ChatWidgetPanel({
         <div className="mt-1 flex w-full min-w-0 items-center justify-between gap-2 pt-1">
           <span
             aria-hidden
-            className="min-w-0 truncate font-mono text-[12px] text-white/30 select-none"
+            className="min-w-0 truncate font-mono text-[10px] md:text-[12px] text-term-fg/30 select-none"
           >
             [Enter] Run · [Ctrl+J] Newline
           </span>
@@ -2075,7 +2129,7 @@ export function ChatWidgetPanel({
                 !emailFlow.email.trim() ||
                 !emailFlow.rawMessage.trim()
               }
-              className="h-7 cursor-pointer rounded border border-white/30 bg-white/10 px-3 font-mono text-xs font-semibold text-white hover:bg-white/20 active:scale-95 disabled:opacity-40"
+              className="h-7 cursor-pointer rounded border border-term-fg/30 bg-term-fg/10 px-3 font-mono text-xs font-semibold text-term-fg hover:bg-term-fg/20 active:scale-95 disabled:opacity-40"
             >
               [Next ↵]
             </Button>
@@ -2090,7 +2144,7 @@ export function ChatWidgetPanel({
     <>
 
       {/* Body */}
-      <div className="relative flex min-h-0 min-w-0 flex-1 flex-col border-b border-line bg-black px-5 pt-8 pb-8 overflow-hidden font-mono sm:px-8 sm:pt-6 sm:pb-6">
+      <div className="relative flex min-h-0 min-w-0 flex-1 flex-col border-b border-line bg-term-bg px-5 pt-8 pb-8 overflow-hidden font-mono sm:px-8 sm:pt-6 sm:pb-6">
         <div
           ref={scrollContainerRef}
           className="min-h-0 min-w-0 grow overflow-x-hidden overflow-y-auto pr-1"
@@ -2113,7 +2167,7 @@ export function ChatWidgetPanel({
                   <div className="flex items-baseline gap-2 leading-6">
                     <span
                       aria-hidden
-                      className="shrink-0 font-bold text-white select-none"
+                      className="shrink-0 font-bold text-term-fg select-none"
                     >
                       guest@alfakhrza:~$
                     </span>
@@ -2195,9 +2249,9 @@ export function ChatWidgetPanel({
         </div>
 
         {/* Footer */}
-        <div className="mt-2 flex shrink-0 items-center justify-between gap-3 text-[12px] leading-none text-muted-foreground select-none">
+        <div className="mt-2 flex shrink-0 items-center justify-between gap-3 text-[8px] md:text-[12px] leading-none text-muted-foreground select-none">
           <div className="flex items-center gap-2">
-            <span className="bg-white px-2 py-1 text-black">
+            <span className="bg-term-fg px-2 py-1 text-term-bg">
               portfolio-cli · interactive mode
             </span>
             <span>~/alfakhreza</span>
