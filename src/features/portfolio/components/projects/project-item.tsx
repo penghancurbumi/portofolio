@@ -6,6 +6,7 @@ import Link from "next/link"
 
 import type { Project } from "@/features/portfolio/types/projects"
 import { useIntentPrefetch } from "@/hooks/use-intent-prefetch"
+import { useTranslation } from "@/lib/i18n/use-translation"
 import { cn } from "@/lib/utils"
 
 export function ProjectItem({
@@ -15,6 +16,7 @@ export function ProjectItem({
   className?: string
   project: Project
 }) {
+  const { t } = useTranslation()
   const href = `/projects/${project.id}`
   const intentPrefetch = useIntentPrefetch(href)
 
@@ -40,7 +42,9 @@ export function ProjectItem({
         </p>
 
         <div className="flex flex-wrap items-center gap-1.5">
-          <span className="text-sm text-muted-foreground">Tahun {project.year}</span>
+          <span className="text-sm text-muted-foreground">
+            {t.projects.year} {project.year}
+          </span>
         </div>
       </div>
 

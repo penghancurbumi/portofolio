@@ -24,9 +24,6 @@ const dictionary = {
       light: "Light",
       system: "System",
       dark: "Dark",
-      sound: "Sound",
-      soundOn: "Sound on",
-      soundOff: "Sound off",
     },
     skipToContent: "Skip to content",
     greeting: {
@@ -62,6 +59,11 @@ const dictionary = {
     projects: {
       title: "Projects",
       viewAll: "View all",
+      year: "Year",
+      workInProgress: "Work in progress",
+    },
+    gallery: {
+      workInProgress: "Still cooking",
     },
     techStack: {
       title: "Stack",
@@ -211,9 +213,6 @@ const dictionary = {
       light: "Terang",
       system: "Sistem",
       dark: "Gelap",
-      sound: "Suara",
-      soundOn: "Suara aktif",
-      soundOff: "Suara nonaktif",
     },
     skipToContent: "Langsung ke konten",
     greeting: {
@@ -252,8 +251,13 @@ const dictionary = {
     projects: {
       title: "Proyek",
       viewAll: "Lihat semua",
+      year: "Tahun",
+      workInProgress: "Sedang dikerjakan",
       callout:
         "Ide menjadi nyata ketika keputusan model, antarmuka, dan produk bergerak bersama.",
+    },
+    gallery: {
+      workInProgress: "Masih disiapkan",
     },
     techStack: {
       title: "Teknologi",

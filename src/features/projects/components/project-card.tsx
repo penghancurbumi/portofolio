@@ -34,7 +34,7 @@ export function ProjectCard({
   return (
     <div
       id={`project-${project.id}`}
-      className="group flex flex-col gap-2 bg-background p-3 transition-[background-color] duration-200 ease-out hover:bg-accent-muted"
+      className="group flex flex-col gap-2 bg-white p-3 transition-[background-color] duration-200 ease-out hover:bg-neutral-100 dark:bg-background dark:hover:bg-accent-muted"
     >
       <Link
         href={href}
@@ -109,6 +109,7 @@ export function ProjectCard({
 }
 
 export function ProjectGrid({ projects }: { projects: Project[] }) {
+  const { t } = useTranslation()
   const isOdd = projects.length % 2 === 1
 
   return (
@@ -118,8 +119,8 @@ export function ProjectGrid({ projects }: { projects: Project[] }) {
       ))}
       {isOdd && (
         <div className="hidden min-h-[300px] flex-col items-center justify-center bg-background p-6 select-none sm:flex">
-          <span className="font-handwritten text-3xl font-medium tracking-wider text-muted-foreground">
-            Still cooking
+          <span className="font-ibm-plex-mono text-2xl font-medium tracking-wider text-muted-foreground">
+            {t.projects.workInProgress}
           </span>
         </div>
       )}

@@ -4,6 +4,7 @@ import Script from "next/script"
 import { GalleryVideo } from "@/components/gallery-video"
 import { SectionSeparator } from "@/components/section-separator"
 import { SITE_INFO } from "@/config/site"
+import { GalleryPlaceholder } from "@/features/projects/components/gallery-placeholder"
 import { createPageMetadata } from "@/lib/seo"
 import { cn } from "@/lib/utils"
 
@@ -151,13 +152,7 @@ export default function GalleryPage() {
           {GALLERY_ITEMS.map((item, index) => (
             <GalleryCard key={item.src} item={item} eager={index < 2} />
           ))}
-          {GALLERY_ITEMS.length % 2 === 1 && (
-            <div className="hidden min-h-62.5 flex-col items-center justify-center bg-card p-6 select-none sm:flex">
-              <span className="font-handwritten text-3xl font-medium tracking-wider text-muted-foreground">
-                Still cooking
-              </span>
-            </div>
-          )}
+          {GALLERY_ITEMS.length % 2 === 1 && <GalleryPlaceholder />}
         </div>
 
         {/* Butts straight against the last row's rule, with no gap - that rule
