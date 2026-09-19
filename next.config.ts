@@ -31,6 +31,17 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   devIndicators: false,
   poweredByHeader: false,
+  // Next dev blocks cross-origin requests to dev-only assets (HMR, the dev
+  // runtime chunks) unless the origin is listed. Opening the app over the LAN
+  // or a Tailscale IP is exactly that case, so the private ranges and the
+  // Tailscale CGNAT range are allowed here. Dev only - no effect on builds.
+  allowedDevOrigins: [
+    "100.79.39.66",
+    "192.168.*.*",
+    "10.*.*.*",
+    "172.16.*.*",
+    "*.ts.net",
+  ],
   env: {
     NEXT_PUBLIC_GIT_BRANCH: GIT_BRANCH,
     NEXT_PUBLIC_GIT_COMMIT: GIT_COMMIT,
