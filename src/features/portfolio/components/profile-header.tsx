@@ -63,7 +63,7 @@ export function ProfileHeader({
           {l(USER.about, USER.aboutId)}
         </p>
 
-        <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-sm text-muted-foreground">
+        <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-[10px] md:text-sm text-muted-foreground">
           <span className="inline-flex items-center gap-1.5">
             <BriefcaseBusiness className="size-4" aria-hidden />
             {USER.jobTitle}

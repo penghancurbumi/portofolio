@@ -20,7 +20,7 @@ export const USER: User = {
     "Graphic Design",
   ],
   flipSentencesId: [
-    "Software Engineer",
+    "Fullstack Developer",
     "Pengembang Frontend",
     "Pengembang Full Stack",
     "Pengembang Web",

@@ -1,3 +1,5 @@
+import { cn } from "@/lib/utils"
+
 export function VerifiedIcon({
   className = "",
   ...props
@@ -6,7 +8,7 @@ export function VerifiedIcon({
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 22 22"
-      className={className}
+      className={cn("text-white dark:text-black", className)}
       aria-label="Verified account"
       role="img"
       {...props}
@@ -58,10 +60,11 @@ export function VerifiedIcon({
           d="M9.662 15.65 6.233 12.22l1.414-1.414 2.015 2.015 4.336-4.73 1.47 1.348-5.806 6.21z"
           fill="#666666"
         />
-        {/* Layer 4: Bold Black Checkmark */}
+        {/* Layer 4: Bold Checkmark - follows the current text colour, so it is
+            white on the light theme and black on the dark theme. */}
         <path
           d="M9.662 14.85 6.233 11.42l1.414-1.414 2.015 2.015 4.336-4.73 1.47 1.348-5.806 6.21z"
-          fill="#000000"
+          fill="currentColor"
         />
       </g>
     </svg>

@@ -6,17 +6,13 @@ import {
   GearSix,
   Monitor,
   Moon,
-  SpeakerHigh,
-  SpeakerX,
   Sun,
 } from "@phosphor-icons/react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useTheme } from "next-themes"
-import { type MouseEvent, useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
-import { useNavigationSound } from "@/hooks/soundcn/use-navigation-sound"
-import { useSoundPreference } from "@/hooks/soundcn/use-sound-preference"
 import { useLanguagePreference } from "@/hooks/use-language-preference"
 import { useTranslation } from "@/lib/i18n/use-translation"
 import { cn } from "@/lib/utils"
@@ -95,10 +91,8 @@ function IconChat({ className, active = false }: IconProps) {
 export function PortfolioNavbar({ className }: { className?: string }) {
   const pathname = usePathname()
   const { theme, setTheme } = useTheme()
-  const { enabled, setEnabled } = useSoundPreference()
   const { language, setLanguage } = useLanguagePreference()
   const { t } = useTranslation()
-  const playNavigation = useNavigationSound()
   const [settingsOpen, setSettingsOpen] = useState(false)
 
   const settingsRef = useRef<HTMLDivElement>(null)
@@ -123,20 +117,8 @@ export function PortfolioNavbar({ className }: { className?: string }) {
     }
   }, [settingsOpen])
 
-  const handleLinkClick = (
-    event: MouseEvent<HTMLAnchorElement>,
-    isActive: boolean
-  ) => {
+  const handleLinkClick = () => {
     setSettingsOpen(false)
-    if (
-      !isActive &&
-      !event.metaKey &&
-      !event.ctrlKey &&
-      !event.shiftKey &&
-      !event.altKey
-    ) {
-      playNavigation()
-    }
   }
 
   const items = [
@@ -181,7 +163,6 @@ export function PortfolioNavbar({ className }: { className?: string }) {
       icon: GearSix,
       type: "action" as const,
       onClick: () => {
-        playNavigation()
         setSettingsOpen((open) => !open)
       },
     },
@@ -218,7 +199,7 @@ export function PortfolioNavbar({ className }: { className?: string }) {
                 aria-label={item.label}
                 aria-current={isActive ? "page" : undefined}
                 data-active={isActive || undefined}
-                onClick={(event) => handleLinkClick(event, isActive)}
+                onClick={handleLinkClick}
                 className={cn(
                   "group relative flex h-full min-w-0 cursor-pointer items-center justify-center gap-1.5 px-2 text-xs font-medium transition-colors duration-200 select-none focus-visible:z-1 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-inset sm:text-sm",
                   isActive
@@ -354,23 +335,6 @@ export function PortfolioNavbar({ className }: { className?: string }) {
                 onClick={() => setTheme("dark")}
               >
                 <Moon size={16} weight="duotone" aria-hidden />
-              </SettingsOption>
-            </SettingsRow>
-
-            <SettingsRow label={t.settings.sound}>
-              <SettingsOption
-                label={t.settings.soundOn}
-                pressed={enabled}
-                onClick={() => setEnabled(true)}
-              >
-                <SpeakerHigh size={16} weight="duotone" aria-hidden />
-              </SettingsOption>
-              <SettingsOption
-                label={t.settings.soundOff}
-                pressed={!enabled}
-                onClick={() => setEnabled(false)}
-              >
-                <SpeakerX size={16} weight="duotone" aria-hidden />
               </SettingsOption>
             </SettingsRow>
           </div>
