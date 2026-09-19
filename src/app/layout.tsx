@@ -5,8 +5,8 @@ import dynamic from "next/dynamic"
 import Script from "next/script"
 import type { Person, ProfilePage, WebSite, WithContext } from "schema-dts"
 
-import { Providers } from "@/components/providers"
 import { PetdexPet } from "@/components/petdex-pet"
+import { Providers } from "@/components/providers"
 import { META_THEME_COLORS, SITE_INFO } from "@/config/site"
 import { USER } from "@/features/portfolio/data/user"
 import { SITE_OG_IMAGE } from "@/lib/seo"
@@ -244,6 +244,16 @@ export default function RootLayout({
           href="/fonts/geist-mono-latin.woff2"
           as="font"
           type="font/woff2"
+          crossOrigin="anonymous"
+        />
+        {/* Pixel display face, used by the footer banner editorial block - all
+            below the fold, so preloaded at low priority. */}
+        <link
+          rel="preload"
+          href="/fonts/pixelify-sans-latin.woff2"
+          as="font"
+          type="font/woff2"
+          fetchPriority="low"
           crossOrigin="anonymous"
         />
         <Script

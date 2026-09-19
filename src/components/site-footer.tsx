@@ -21,7 +21,7 @@ const INDEX_LINKS = [{ title: "Home", href: "/" }, ...MAIN_NAV]
 
 // Directory column: rows are uniformly tall so the two columns line up.
 const TREE_CLASS =
-  "[&_ul]:flex [&_ul]:flex-col [&_li]:flex [&_li]:min-h-7 [&_li]:items-center [&_li]:font-ibm-plex-mono [&_li]:text-[1.1rem] [&_li]:tracking-wide [&_li>*]:min-w-0 [&_li>*]:flex-1"
+  "[&_ul]:flex [&_ul]:flex-col [&_li]:flex [&_li]:min-h-5 [&_li]:items-center [&_li]:font-ibm-plex-mono [&_li]:text-[15px] [&_li]:tracking-wide [&_li>*]:min-w-0 [&_li>*]:flex-1"
 
 const LABEL_CLASS =
   "mb-1.5 font-ibm-plex-mono text-[12px] tracking-[0.18em] text-muted-foreground/75 uppercase select-none"
