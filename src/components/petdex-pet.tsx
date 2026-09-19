@@ -12,19 +12,37 @@ const ROW_FAILED = 5
 
 const SPEED = 46 // px / second
 const FRAME_MS = 140
-const TURNS_BEFORE_REST = 6 // bolak-balik sebelum "capek" -> failed
-const REST_MS = 2600 // durasi animasi failed/istirahat
-const WAVE_MS_MIN = 1400
-const WAVE_MS_MAX = 2600
-const WAVE_CHANCE = 0.0022 // peluang melambai tiap frame saat berjalan
+const TURNS_BEFORE_REST = 2 // bolak-balik sebelum "capek" -> failed (sad)
+const REST_MS = 3200 // durasi animasi failed/istirahat
+const WAVE_MS_MIN = 1600
+const WAVE_MS_MAX = 2800
+const WAVE_CHANCE = 0.0016 // peluang melambai tiap frame saat berjalan
+// Guards so a walk stretch can never run forever without resting. If the pet
+// hasn't turned (and thus can't reach the turn-based sad trigger) within this
+// window, it goes sad anyway. Without this the "sad" state could stay hidden
+// for minutes on a wide screen where turns are rare.
+const MAX_WALK_MS = 9000
 
 type Props = {
   src?: string
   size?: number
   slug?: string
+  /** Fall speed in px/second. */
+  speed?: number
+  /** Milliseconds of walking before the pet is guaranteed to rest (sad). */
+  maxWalkMs?: number
+  /** How long the sad/rest state lasts, in milliseconds. */
+  restMs?: number
 }
 
-export function PetdexPet({ src = "/pets/prabowo-2.webp", size = 84, slug = "Prabowo" }: Props) {
+export function PetdexPet({
+  src = "/pets/prabowo-2.webp",
+  size = 84,
+  slug = "Prabowo",
+  speed = SPEED,
+  maxWalkMs = MAX_WALK_MS,
+  restMs = REST_MS,
+}: Props) {
   const [dims, setDims] = useState<{ w: number; h: number } | null>(null)
   const framesRef = useRef<number[]>(new Array(ROWS).fill(4))
 
@@ -36,6 +54,9 @@ export function PetdexPet({ src = "/pets/prabowo-2.webp", size = 84, slug = "Pra
   const modeRef = useRef<"walk" | "wave" | "failed">("walk")
   const turnsRef = useRef(0)
   const untilRef = useRef(0)
+  // Tracks how long the current walk stretch has lasted, so the pet is forced
+  // into the sad/rest state when it can't reach the turn-based trigger.
+  const walkStartRef = useRef(0)
 
   // Load the sprite sheet, measure the per-state frame count by scanning alpha.
   useEffect(() => {
@@ -97,13 +118,14 @@ export function PetdexPet({ src = "/pets/prabowo-2.webp", size = 84, slug = "Pra
     let raf = 0
     let last = performance.now()
     let frameAcc = 0
+    walkStartRef.current = last
 
     const tick = (now: number) => {
       const dt = now - last
       last = now
 
       if (modeRef.current === "walk") {
-        xRef.current += dirRef.current * SPEED * (dt / 1000)
+        xRef.current += dirRef.current * speed * (dt / 1000)
         let turned = false
         if (xRef.current + dims.w >= vw) {
           xRef.current = vw - dims.w
@@ -115,20 +137,32 @@ export function PetdexPet({ src = "/pets/prabowo-2.webp", size = 84, slug = "Pra
           turned = true
         }
 
+        const walkedFor = now - walkStartRef.current
         if (turned) {
           turnsRef.current += 1
           if (turnsRef.current >= TURNS_BEFORE_REST) {
             turnsRef.current = 0
             modeRef.current = "failed"
-            untilRef.current = now + REST_MS
+            untilRef.current = now + restMs
           }
-        } else if (Math.random() < WAVE_CHANCE) {
-          modeRef.current = "wave"
-          untilRef.current =
-            now + WAVE_MS_MIN + Math.random() * (WAVE_MS_MAX - WAVE_MS_MIN)
+        } else if (
+          // Guarantee a rest even when the pet never reaches a wall.
+          walkedFor >= maxWalkMs ||
+          Math.random() < WAVE_CHANCE
+        ) {
+          if (walkedFor >= maxWalkMs) {
+            turnsRef.current = 0
+            modeRef.current = "failed"
+            untilRef.current = now + restMs
+          } else {
+            modeRef.current = "wave"
+            untilRef.current =
+              now + WAVE_MS_MIN + Math.random() * (WAVE_MS_MAX - WAVE_MS_MIN)
+          }
         }
       } else if (now >= untilRef.current) {
         modeRef.current = "walk"
+        walkStartRef.current = now
       }
 
       const active = modeRef.current
@@ -170,7 +204,7 @@ export function PetdexPet({ src = "/pets/prabowo-2.webp", size = 84, slug = "Pra
       cancelAnimationFrame(raf)
       window.removeEventListener("resize", onResize)
     }
-  }, [dims, src])
+  }, [dims, src, speed, maxWalkMs, restMs])
 
   if (!dims) return null
 
