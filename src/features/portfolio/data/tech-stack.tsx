@@ -77,7 +77,7 @@ export const TECH_STACK: TechStack[] = [
     key: "glm",
     title: "GLM",
     href: "https://glm.ai/",
-    iconId: "glm",
+    iconId: "/icons/glm.png",
     categories: ["AI / ML"],
   },
   {
@@ -195,7 +195,7 @@ export const TECH_STACK: TechStack[] = [
     key: "antigravity",
     title: "Antigravity",
     href: "https://www.antigravity.ai/",
-    iconId: "antigravity",
+    iconId: "/icons/google-antigravity.webp",
     categories: ["Tools"],
   },
   {
@@ -209,14 +209,14 @@ export const TECH_STACK: TechStack[] = [
     key: "opencode",
     title: "OpenCode",
     href: "https://opencode.ai/",
-    iconId: "opencode",
+    iconId: "/icons/opencode.webp",
     categories: ["Tools"],
   },
   {
     key: "9router",
     title: "9router",
     href: "https://github.com/decolua/9router",
-    iconId: "9router",
+    iconId: "/icons/9router.webp",
     categories: ["Tools"],
   },
 ]

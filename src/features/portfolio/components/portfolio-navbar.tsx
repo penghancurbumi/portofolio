@@ -323,13 +323,6 @@ export function PortfolioNavbar({ className }: { className?: string }) {
                 <Sun size={16} weight="duotone" aria-hidden />
               </SettingsOption>
               <SettingsOption
-                label={t.settings.system}
-                pressed={theme === "system"}
-                onClick={() => setTheme("system")}
-              >
-                <Monitor size={16} weight="duotone" aria-hidden />
-              </SettingsOption>
-              <SettingsOption
                 label={t.settings.dark}
                 pressed={theme === "dark"}
                 onClick={() => setTheme("dark")}

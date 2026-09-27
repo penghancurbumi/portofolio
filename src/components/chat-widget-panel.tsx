@@ -1217,6 +1217,7 @@ export function ChatWidgetPanel({
   // (globals.css), and the page does not react to it opening at all.
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [input, setInput] = useState("")
+  const [isComposerFocused, setIsComposerFocused] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [loadingMessageIndex, setLoadingMessageIndex] = useState(0)
   const [loadingKind, setLoadingKind] = useState<"chat" | "today">("chat")
@@ -2020,7 +2021,10 @@ export function ChatWidgetPanel({
 
   const composerValue =
     emailFlow.step === "filling_form" ? emailFlow.rawMessage : input
-  const showCursor = composerValue === "" && !isInputDisabled
+  // Kursor kedip hanya tampil setelah user mengklik/fokus ke input dan masih
+  // kosong. Sebelum diklik, kursor disembunyikan.
+  const showCursor =
+    composerValue === "" && !isInputDisabled && isComposerFocused
 
   // ── Form Element ─────────────────────────────────────────────────────────
   const FormElement = (
@@ -2053,8 +2057,20 @@ export function ChatWidgetPanel({
       )}
 
       <form onSubmit={handleSubmit}>
-        <div className="flex items-start gap-1.5">
-          <div className="flex shrink-0 items-center gap-1 pt-1 font-mono text-[12px] select-none">
+        <div
+          className="flex cursor-text items-start gap-1.5"
+          onClick={(event) => {
+            // Klik di mana saja pada baris input langsung fokuskan textarea,
+            // jadi user tak perlu klik tepat di kotak teks berkali-kali.
+            if (event.target === event.currentTarget) {
+              textareaRef.current?.focus()
+            }
+          }}
+        >
+          <div
+            className="flex shrink-0 items-center gap-1 pt-1 font-mono text-[12px] select-none"
+            onClick={() => textareaRef.current?.focus()}
+          >
             <span className="font-bold text-term-fg">guest@alfakhrza</span>
             <span className="text-term-fg/50">:</span>
             <span className="font-bold text-term-fg">~</span>
@@ -2069,6 +2085,8 @@ export function ChatWidgetPanel({
               emailFlow.step === "filling_form" ? emailFlow.rawMessage : input
             }
             disabled={isInputDisabled && emailFlow.step !== "filling_form"}
+            onFocus={() => setIsComposerFocused(true)}
+            onBlur={() => setIsComposerFocused(false)}
             onChange={(event) => {
               const val = event.target.value
               if (emailFlow.step === "filling_form") {
