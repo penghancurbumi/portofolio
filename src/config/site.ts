@@ -36,13 +36,17 @@ export const MAIN_NAV: NavItem[] = [
     title: "Gallery",
     href: "/gallery",
   },
+  {
+    title: "Terminal",
+    href: "/terminal",
+  },
 ]
 
-export const X_HANDLE = "@zickrian"
 export const GITHUB_USERNAME = "penghancurbumi"
 export const GITHUB_REPO = "penghancurbumi"
 export const GITHUB_REPO_URL = `https://github.com/${GITHUB_REPO}`
-export const UTM_PARAMS = {
-  utm_source: "zickrian",
-}
 
+/** Appended as `?utm_source=...` to outbound links so visits can be attributed. */
+export const UTM_PARAMS = {
+  utm_source: "alfakhrza",
+}

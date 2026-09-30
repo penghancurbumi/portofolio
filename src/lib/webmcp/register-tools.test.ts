@@ -40,13 +40,13 @@ describe("WebMCP Tool Registration & Execution", () => {
   it("executes get_project_details for valid and invalid slugs", async () => {
     const detailsTool = tools.find((t) => t.name === "get_project_details")!
 
-    const resValid = (await detailsTool.execute({ slug: "jobfinder" })) as {
+    const resValid = (await detailsTool.execute({ slug: "BidikKerja" })) as {
       id: string
       title: string
       role: string
     }
-    expect(resValid.id).toBe("jobfinder")
-    expect(resValid.title).toContain("JobFinder")
+    expect(resValid.id).toBe("BidikKerja")
+    expect(resValid.title).toContain("BidikKerja")
 
     const resInvalid = (await detailsTool.execute({ slug: "nonexistent-slug-123" })) as {
       error: string
