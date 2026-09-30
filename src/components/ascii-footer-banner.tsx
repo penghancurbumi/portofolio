@@ -67,7 +67,7 @@ export function AsciiFooterBanner({ className = "" }: AsciiFooterBannerProps) {
     <div
       ref={containerRef}
       role="region"
-      aria-label="Footer ASCII landscape banner"
+      aria-label="Footer banner"
       className={`relative min-h-[195px] w-full overflow-hidden border-b border-line bg-card select-none sm:min-h-[250px] ${className}`}
     >
       {/* Looped Video */}
@@ -76,14 +76,14 @@ export function AsciiFooterBanner({ className = "" }: AsciiFooterBannerProps) {
           below starts it when it actually scrolls into view. */}
       <video
         ref={videoRef}
-        src="/ascii-footer.mp4"
+        src="/background-footers.mp4"
         loop
         muted
         playsInline
         preload="none"
         aria-hidden="true"
         onPlaying={() => setIsPlaying(true)}
-        className={`absolute inset-0 size-full object-cover object-bottom transition-opacity duration-500 ${isPlaying ? "opacity-100" : "opacity-0"
+        className={`absolute inset-0 size-full object-cover object-bottom transition-opacity duration-500 ${isPlaying ? "opacity-40" : "opacity-0"
           }`}
       />
 
@@ -94,7 +94,7 @@ export function AsciiFooterBanner({ className = "" }: AsciiFooterBannerProps) {
       />
 
       {/* Editorial Content - Perfectly centered vertically (50% / 50%) */}
-      <div className="absolute inset-0 z-10 flex flex-col justify-center px-5 sm:px-8">
+      <div className="absolute inset-0 z-10 flex flex-col justify-center px-5 py-6 sm:px-8">
         <div className="max-w-lg sm:max-w-xl">
           {/* Headline */}
           <h2 className="font-pixel text-lg leading-snug font-bold tracking-tight text-white sm:text-2xl sm:leading-tight sm:whitespace-nowrap">
@@ -115,7 +115,7 @@ export function AsciiFooterBanner({ className = "" }: AsciiFooterBannerProps) {
           {/* CTA Button */}
           <div className="mt-3.5 sm:mt-4.5">
             <a
-              href="https://wa.me/6285155487647"
+              href="https://wa.me/6287816001844"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex h-7 shrink-0 items-center justify-center rounded-[min(var(--radius-lg),10px)] bg-white px-3 font-pixel text-xs font-medium tracking-wide text-zinc-950 shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/90 hover:shadow-md focus-visible:ring-2 focus-visible:ring-white focus-visible:outline-none active:translate-y-0 active:scale-[0.98] sm:h-8 sm:px-3.5 sm:text-sm"
