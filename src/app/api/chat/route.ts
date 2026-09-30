@@ -86,7 +86,7 @@ const LITERAL_CODE_SYNTAX_PATTERN =
 
 // Detects explicit code-generation requests in natural language.
 // Narrow verb+noun pattern only - avoids false positives on portfolio questions
-// like "aplikasi apa yang pernah dibuat Firdaus" (noun precedes verb = no
+// like "aplikasi apa yang pernah dibuat Fakhreza" (noun precedes verb = no
 // match). "app/aplikasi" is deliberately excluded from this list - see
 // APP_BUILD_REQUEST_PATTERN below for why.
 const CODE_GENERATION_REQUEST_PATTERN =
@@ -100,7 +100,7 @@ const IMPERATIVE_VERB_PATTERN =
 
 // Separated from CODE_GENERATION_REQUEST_PATTERN because "app/aplikasi" is
 // far more ambiguous - it very commonly appears in legitimate portfolio
-// questions ("aplikasi apa aja yang pernah dibikin Firdaus?"). This pattern
+// questions ("aplikasi apa aja yang pernah dibikin Fakhreza?"). This pattern
 // only matches when the request is unambiguously "build ME an app".
 const APP_BUILD_REQUEST_PATTERN =
   /\b(?:buatkan|buatin|bikinin|build me|make me|create me)\s+(?:(?:a|an)\s+)?(?:app|aplikasi)\b|\b(?:app|aplikasi)\s+(?:untuk\s+(?:saya|aku|gue|gua)|for me)\b/i
@@ -349,9 +349,9 @@ function isLikelyIndonesian(text: string, fallbackText = "") {
 // path bypasses the model entirely, so it rotates its own wording to avoid
 // sounding like a canned error string on repeated attempts.
 const REFUSALS_ID =
-  "Maaf, aku hanya bisa membahas portofolio Firdaus; untuk hal lain, silakan hubungi langsung lewat kontak yang tersedia."
+  "Maaf, aku hanya bisa membahas portofolio Fakhreza; untuk hal lain, silakan hubungi langsung lewat kontak yang tersedia."
 const REFUSALS_EN =
-  "Sorry, I can only discuss Firdaus's portfolio; for anything else, please use the available contact channel."
+  "Sorry, I can only discuss Fakhreza's portfolio; for anything else, please use the available contact channel."
 
 function buildOutOfScopeRefusal(message: string, fallbackText = "") {
   return isLikelyIndonesian(message, fallbackText) ? REFUSALS_ID : REFUSALS_EN

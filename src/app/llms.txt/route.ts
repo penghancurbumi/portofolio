@@ -9,46 +9,43 @@ function buildLlmsTxt(): string {
   const email = decodeEmail(USER.email)
   const baseUrl = SITE_INFO.url
 
-  return `# Firdaus Khotibul Zickrian
+  return `# Muhammad Al Fakhreza Dwi Putra
 
-> Firdaus Khotibul Zickrian is an AI & Machine Learning Engineer and Computer Science scholar at Universitas Dian Nuswantoro (GPA 3.88/4.00) based in Indonesia. He specializes in practical machine learning systems, business process automation, ERP integrations, predictive analytics, and modern full-stack web applications.
+> Muhammad Al Fakhreza Dwi Putra is a Fullstack Developer and Informatics Engineering student at Universitas Nusa Putra (GPA 3.50/4.00) based in Indonesia. He specializes in modern web applications, machine learning systems, business process automation, ERP integrations, and predictive analytics.
 
 ## Core Projects & Systems
-- [LeadsUp](${baseUrl}/projects/leadsup): Predictive banking lead-scoring intelligence platform built with Scikit-learn, REST API, and data pipeline (presented to Accenture).
-- [Narratio AI](${baseUrl}/projects/naratioai): AI business consultant deck generator combining web scraping, sentiment analysis, semantic embeddings, and LLM orchestration.
-- [Custora AI](${baseUrl}/projects/custora): Customer intelligence platform with churn prediction and sentiment analysis deployed on Azure ML (Best Capstone Project, Top 5 of 120+ teams).
-- [Base Realms](${baseUrl}/projects/base-realms): Onchain 16-bit RPG battle game on Base network with QRIS onboarding (Coinbase Hackathon Indonesia 2025 Top 5 National Finalist).
-- [Production MLOps System](${baseUrl}/projects/machine-learning-system): End-to-end ML lifecycle with MLflow, DagsHub, CI/CD automated retraining, Prometheus, Grafana, and Docker).
-- [Polsek Rembang](${baseUrl}/projects/polsekrembang): Public police administration and LangChain RAG AI assistant service platform.
-- [Campus Lost & Found System](${baseUrl}/projects/lostandfound): Geolocation-integrated web platform evaluated with Mean Opinion Score (MOS), published in JUTISI journal.
+- [UANGKU](${baseUrl}/projects/uangku): UI/UX design concept for a digital finance application covering top up, payments, and daily transactions (Figma, design system, prototyping).
+- [MaxGym Performance](${baseUrl}/projects/maxgym): Company profile website for a fitness performance brand (PHP, Tailwind CSS, JavaScript).
+- [TimeLeak AI](${baseUrl}/projects/timeleak): Time-to-money awareness tool that helps users see the monetary value of their time (Next.js, TypeScript, Tailwind CSS). Google #JuaraVibeCoding.
+- [BidikKerja](${baseUrl}/projects/BidikKerja): Job search and career platform connecting candidates with opportunities (Vue.js, Node.js, Python). In progress.
+- [PT Silga Perkasa](${baseUrl}/projects/silga): Company profile website for PT Silga Perkasa (Next.js, Laravel, Tailwind CSS). In progress.
 
 ## Professional Experience & Career Roles
-- [PT Custompedia Creative Group](${baseUrl}/#experience): ERP & AI Engineer Intern (Reduced production error rate from 88% to 2% via async processing and Cloudflare R2).
-- [Pijak by Dicoding & IBM](${baseUrl}/#experience): AI Engineer Cohort & Team Lead (Graduated with Distinction, top 10% of 670+ participants).
-- [Asah by Dicoding & Accenture](${baseUrl}/#experience): Machine Learning Lead (Selected top participants from 2,000 nationwide).
-- [Blockvizo Research](${baseUrl}/#experience): Research & Data Analyst (Analyzed 50,000+ blockchain records; 85% accuracy ML models; generated Rp50M+ profit).
-- [Universitas Dian Nuswantoro](${baseUrl}/#experience): Computer Science Laboratory Assistant (Mentored 140+ students in programming & database logic).
-
-## Research Publications
-- [JUTISI Journal (2026)](https://ojs.stmik-banjarbaru.ac.id/index.php/jutisi/article/view/3476/1658): "Implementasi Sistem Lost and Found Kampus Berbasis Web Terintegrasi Geolocation dan Evaluasi MOS".
+- [PT Silga Perkasa](${baseUrl}/#experience): IT Support (02.2026 – 07.2026) — hardware, software, and network troubleshooting; technical support for users.
+- [Himpunan Mahasiswa Teknik Informatika](${baseUrl}/#experience): Media, Konten, dan Publikasi — organizational information distribution and visual branding.
+- [Himpunan Mahasiswa Teknik Informatika](${baseUrl}/#experience): Ketua Pelaksana — COMTECH 2025 — led an innovative system development competition.
+- [Himpunan Mahasiswa Teknik Informatika](${baseUrl}/#experience): Sub Divisi Visual dan Desain (2024 – 2025).
+- [UKM Nusapala](${baseUrl}/#experience): Anggota Divisi Infokom (2024 – 2025) — social media feed and story design.
+- [UKM Khusus Jurnalis Nuansa](${baseUrl}/#experience): Anggota Divisi Mindset — Kameramen (2024 – 2025).
+- [MABIM NusaPutra](${baseUrl}/#experience): Divisi Mentor (08.2024 – 09.2024) — guided new students through campus orientation at Universitas Nusa Putra.
+- [LDKM 2024](${baseUrl}/#experience): Divisi Mentor (03.2025 – 07.2025) — leadership and teamwork training.
 
 ## Core Technical Stack
-- **AI & Machine Learning**: Python, PyTorch, TensorFlow, Scikit-learn, Hugging Face, OpenCV, LangChain, Groq API, Azure ML.
-- **Web & Full-Stack**: TypeScript, React, Next.js, Tailwind CSS, Node.js, Fastify, Express.
-- **Databases & DevOps**: PostgreSQL, Supabase, Redis, Docker, Cloudflare R2, MLflow, Git.
+- **AI / ML**: Python, TensorFlow, PyTorch, Scikit-Learn, OpenCV, Pandas, NumPy, Claude, ChatGPT, Gemini, DeepSeek.
+- **Frontend**: JavaScript, TypeScript, Laravel, React, Next.js, Tailwind CSS, Vue.js.
+- **Backend**: Node.js, PHP, SQL, PostgreSQL.
+- **Tools**: Docker, Git, GitHub, Figma, Visual Studio Code.
 
 ## Site Navigation & Resources
 - [Home](${baseUrl}/): Main portfolio, profile summary, experiences, and technical overview.
-- [All Projects](${baseUrl}/projects): Comprehensive archive of AI/ML, data, and web engineering projects.
-- [Technical Blog](${baseUrl}/blog): Technical articles on Machine Learning, AI engineering, and software development.
-- [Visual Gallery](${baseUrl}/gallery): Visual documentation of hackathons, research activities, and project milestones.
+- [All Projects](${baseUrl}/projects): Comprehensive archive of design, AI/ML, and web engineering projects.
+- [Technical Blog](${baseUrl}/blog): Technical articles and notes on software development.
+- [Visual Gallery](${baseUrl}/gallery): Visual documentation of activities, events, and project milestones.
 
 ## Contact & Profiles
 - [Portfolio Website](${baseUrl}): ${baseUrl}
-- [GitHub](https://github.com/zickrian): @zickrian
-- [LinkedIn](https://linkedin.com/in/firdauskhotibulzickrian/): Firdaus Khotibul Zickrian
-- [Medium](https://medium.com/@zickriann): @zickriann
-- [Hugging Face](https://huggingface.co/zickrian): @zickrian
+- [GitHub](https://github.com/penghancurbumi): @penghancurbumi
+- [LinkedIn](https://www.linkedin.com/in/muhammad-al-fakhreza-dwi-putra-b16962301/): Muhammad Al Fakhreza Dwi Putra
 - [Email](mailto:${email}): ${email}
 
 ## Optional

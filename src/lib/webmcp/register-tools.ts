@@ -245,7 +245,7 @@ export function getPortfolioWebMCPTools(): WebMCPToolDefinition[] {
     {
       name: "get_experiences",
       description:
-        "Retrieve chronological career history, internships (e.g. PT Custompedia Creative Group), leadership roles, and laboratory assistant positions.",
+        "Retrieve chronological career history, internships (e.g. PT Silga Perkasa), leadership roles, and organizational positions.",
       inputSchema: {
         type: "object",
         properties: {

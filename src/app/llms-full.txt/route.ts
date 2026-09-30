@@ -75,7 +75,7 @@ function buildLlmsFullTxt(): string {
 ## 1. Executive Summary & Profile
 
 - **Full Name**: Muhammad Al Fakhreza Dwi Putra
-- **Role**: AI / Full-Stack Developer / Data 
+- **Role**: Fullstack Developer
 - **Location**: Sukabumi, Indonesia (Timezone: Asia/Jakarta, UTC+7)
 - **Email**: ${email}
 - **Phone**: ${USER.phone}
@@ -89,11 +89,10 @@ function buildLlmsFullTxt(): string {
 
 ## 2. Education & Academic Background
 
-- **Institution**: Universitas Dian Nuswantoro (UDINUS), Semarang, Indonesia
-- **Degree**: Bachelor of Computer Science (S.Kom)
-- **Period**: 2023 – Present (Expected Graduation: October 2027)
-- **Cumulative GPA**: **3.88 / 4.00**
-- **Academic Progress**: Completed **129 of 144 credits** with consistent high distinction.
+- **Institution**: Universitas Nusa Putra, Sukabumi, Indonesia
+- **Degree**: Bachelor of Informatics Engineering (S1 Teknik Informatika)
+- **Period**: 2023 – Present (Expected Graduation: 2027)
+- **Cumulative GPA**: **3.50 / 4.00**
 - **Key Coursework**:
   - Machine Learning & Deep Learning
   - Data Mining & Knowledge Discovery
