@@ -5,7 +5,7 @@ import { USER } from "@/features/portfolio/data/user"
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: `${USER.displayName} - AI & Machine Learning Portfolio`,
+    name: `${USER.displayName} - Fullstack Developer Portfolio`,
     short_name: USER.displayName,
     description: SITE_INFO.description,
     start_url: "/",

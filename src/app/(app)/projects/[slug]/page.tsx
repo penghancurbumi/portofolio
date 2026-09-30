@@ -32,8 +32,8 @@ export async function generateMetadata({
     project.title,
     project.category,
     ...project.skills,
-    "Firdaus Khotibul Zickrian",
-    "zickrian",
+    "Muhammad Al Fakhreza Dwi Putra",
+    "alfakhrza",
   ]
 
   return {

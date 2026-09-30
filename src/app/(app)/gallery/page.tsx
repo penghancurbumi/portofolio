@@ -8,12 +8,12 @@ import { GalleryPlaceholder } from "@/features/projects/components/gallery-place
 import { createPageMetadata } from "@/lib/seo"
 import { cn } from "@/lib/utils"
 
-const title = "AI & Software Project Gallery"
+const title = "Gallery"
 const description =
   "A look at my AI projects, hackathons, technical events, and the software work behind them."
 const keywords = [
-  "Firdaus Khotibul Zickrian gallery",
-  "zickrian portfolio gallery",
+  "Muhammad Al Fakhreza Dwi Putra gallery",
+  "alfakhrza portfolio gallery",
   "AI project showcase",
   "machine learning project gallery",
   "software engineering portfolio",

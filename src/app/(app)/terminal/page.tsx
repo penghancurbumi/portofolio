@@ -3,11 +3,11 @@ import type { Metadata } from "next"
 import { ChatPanelSection } from "@/components/chat-panel-section"
 import { createPageMetadata } from "@/lib/seo"
 
-const title = "Chat with Me"
+const title = "Terminal"
 const description =
-  "Ask me about my AI projects, hackathons, skills, and experiences in a live conversation."
+  "Ask me about my projects, skills, and experiences in a live conversation."
 const keywords = [
-  "Firdaus Khotibul Zickrian chat",
+  "Muhammad Al Fakhreza Dwi Putra chat",
   "AI portfolio assistant",
   "ask me about machine learning projects",
 ]

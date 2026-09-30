@@ -8,9 +8,9 @@ export const USER: User = {
   gender: "male",
   pronouns: "he/him",
 
-  bio: "I'm Firdaus Khotibul Zickrian, an AI Engineer based in Indonesia building practical machine learning systems, data workflows, and modern full-stack web applications that turn ideas into impactful products.",
+  bio: "I'm Muhammad Al Fakhreza Dwi Putra, a Fullstack Developer based in Indonesia building practical web applications, data workflows, and machine learning systems that turn ideas into impactful products.",
   bioId:
-    "Saya Firdaus Khotibul Zickrian, seorang AI Engineer yang berbasis di Indonesia, membangun sistem machine learning yang praktis, alur kerja data, dan aplikasi web full-stack modern yang mengubah ide menjadi produk yang berdampak.",
+    "Saya Muhammad Al Fakhreza Dwi Putra, seorang Fullstack Developer yang berbasis di Indonesia, membangun aplikasi web yang praktis, alur kerja data, dan sistem machine learning yang mengubah ide menjadi produk yang berdampak.",
 
   flipSentences: [
     "Frontend Developer",
@@ -33,16 +33,16 @@ export const USER: User = {
   website: "https://www.alfakhrza.dev",
 
   jobTitle: "Fullstack Developer",
-  seoTitle: "Muhammad Al Fakhreza Dwi Putra | fullstack Developer",
+  seoTitle: "Muhammad Al Fakhreza Dwi Putra | Fullstack Developer",
   seoDescription:
-    "I'm Firdaus Khotibul Zickrian, an AI and machine learning engineer from Indonesia. I build practical software, data products, and machine learning systems.",
+    "I'm Muhammad Al Fakhreza Dwi Putra, a Fullstack Developer from Indonesia. I build practical software, data products, and machine learning systems.",
 
   jobs: [
     {
-      title: "AI Engineer Intern",
-      company: "PT Custompedia Creative Group",
-      website: "https://www.instagram.com/custompedia/",
-      experienceId: "custompedia",
+      title: "IT Support",
+      company: "PT Silga Perkasa",
+      website: "https://www.instagram.com/silgaperkasa/",
+      experienceId: "silga-perkasa",
     },
   ],
 
@@ -53,27 +53,20 @@ export const USER: User = {
   ogImage: "/image/og.png",
   sameAs: [
     "https://www.alfakhrza.dev",
-    "https://github.com/zickrian",
-    "https://linkedin.com/in/firdauskhotibulzickrian/",
-    "https://medium.com/@zickriann",
-    "https://huggingface.co/zickrian",
-    "https://www.pinterest.com/espejodaniel50/",
+    "https://github.com/penghancurbumi",
+    "https://www.linkedin.com/in/muhammad-al-fakhreza-dwi-putra-b16962301/",
   ],
   timeZone: "Asia/Jakarta",
 
   keywords: [
-    "Firdaus Khotibul Zickrian",
-    "zickrian",
-    "Firdaus Khotibul Zickrian portfolio",
-    "zickrian portfolio",
-    "AI engineer Indonesia",
-    "machine learning engineer Indonesia",
-    "AI and machine learning",
+    "Muhammad Al Fakhreza Dwi Putra",
+    "alfakhrza",
+    "Muhammad Al Fakhreza Dwi Putra portfolio",
+    "alfakhrza portfolio",
+    "fullstack developer Indonesia",
     "full stack developer",
     "data products",
-    "MLOps",
-    "computer vision",
-    "AI portfolio",
+    "fullstack portfolio",
     "machine learning portfolio",
   ],
 

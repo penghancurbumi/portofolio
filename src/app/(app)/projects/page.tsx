@@ -6,14 +6,12 @@ import { PROJECTS } from "@/features/portfolio/data/projects"
 import { ProjectsPageContent } from "@/features/projects/components/projects-page-content"
 import { createPageMetadata } from "@/lib/seo"
 
-const title = "AI & Machine Learning Projects"
+const title = "Projects"
 const description =
-  "A selection of projects I've built across AI, machine learning, data, and full-stack development."
+  "A selection of projects I've built across full-stack development."
 const keywords = [
-  "Firdaus Khotibul Zickrian projects",
-  "zickrian projects",
-  "AI projects",
-  "machine learning projects",
+  "Muhammad Al Fakhreza Dwi Putra projects",
+  "alfakhrza projects",
   "full-stack development projects",
 ]
 

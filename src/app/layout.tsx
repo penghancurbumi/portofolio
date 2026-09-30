@@ -23,7 +23,7 @@ const SpeedInsights =
       )
     : null
 
-const fallbackProfileTitle = `${USER.displayName} | AI & Machine Learning Engineer`
+const fallbackProfileTitle = `${USER.displayName} | Fullstack Developer`
 const profileTitle = USER.seoTitle ?? fallbackProfileTitle
 const profileDescription = USER.seoDescription ?? USER.bio
 
@@ -64,8 +64,8 @@ function getProfilePageJsonLd(): WithContext<ProfilePage> {
     alumniOf: [
       {
         "@type": "CollegeOrUniversity",
-        name: "Universitas Dian Nuswantoro",
-        url: "https://dinus.ac.id",
+        name: "Universitas Nusa Putra",
+        url: "https://nusaputra.ac.id",
       },
     ],
     worksFor: USER.jobs.map((job) => ({

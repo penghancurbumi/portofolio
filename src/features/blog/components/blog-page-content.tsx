@@ -46,7 +46,7 @@ function BlogListItem({ post, eager }: { post: MediumPost; eager?: boolean }) {
                 />
               </div>
               <span className="text-[13px] text-foreground/80">
-                Firdaus Khotibul Zickrian
+                Muhammad Al Fakhreza Dwi Putra
               </span>
               <span className="text-[13px] text-muted-foreground">·</span>
               <span className="text-[13px] text-muted-foreground">
