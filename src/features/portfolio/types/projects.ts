@@ -37,6 +37,10 @@ export type Project = {
   year: "2025" | "2026"
   /** Local image URL under /public used in cards and case-study hero. */
   image: string
+  /** True when the project has no owned screenshot yet - cards and the detail
+   *  hero render a "Not found" placeholder instead of borrowing another
+   *  project's image. */
+  imageMissing?: boolean
   /** Optional monochrome icon/logo URL under /public shown beside the project in the portfolio list. Rendered in black & white. */
   logo?: string
   /** Optional video embed shown in the case-study media area. */

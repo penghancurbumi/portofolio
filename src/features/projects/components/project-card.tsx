@@ -10,6 +10,12 @@ import { useIntentPrefetch } from "@/hooks/use-intent-prefetch"
 import { localize } from "@/lib/i18n/localize"
 import { useTranslation } from "@/lib/i18n/use-translation"
 
+// Intrinsic ratio of the project stills. Only the *ratio* matters: `next/image`
+// needs concrete numbers, and the real width/height attributes are overridden by
+// `w-full h-auto` at every breakpoint.
+const IMAGE_WIDTH = 1901
+const IMAGE_HEIGHT = 967
+
 export function ProjectCard({
   project,
   eager,
@@ -48,7 +54,7 @@ export function ProjectCard({
         <div className="relative flex aspect-[16/10] w-full items-center justify-center overflow-hidden rounded-lg border border-line bg-muted select-none">
           {/* Main background: shared card backdrop */}
           <Image
-            src="/background-project.webp"
+            src="/background-projects.webp"
             alt=""
             fill
             sizes="(min-width: 640px) 550px, 100vw"
@@ -56,30 +62,45 @@ export function ProjectCard({
             priority={eager}
           />
 
-          {/* Standardized Floating Frame in the center */}
-          <div className="relative z-10 flex aspect-[16/10] w-[86%] items-center justify-center overflow-hidden rounded-lg border border-black/20 bg-black/40 shadow-xl shadow-black/40 transition-transform duration-500 ease-out group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100 dark:border-white/20">
-            {/* Empty space / slip filler: Blurred project photo */}
-            <Image
-              src={project.image}
-              alt=""
-              fill
-              sizes="(min-width: 640px) 480px, 90vw"
-              className="pointer-events-none object-cover blur-md scale-110 opacity-75 brightness-90 select-none"
-              priority={eager}
-            />
-            <div className="absolute inset-0 bg-black/15 pointer-events-none dark:bg-black/30" />
+          {/* Standardized Floating Frame in the center. No fixed aspect ratio:
+              the frame takes the photo's own ratio, so `object-contain` never
+              has to letterbox and the photo is shown whole at every size. */}
+          <div className="relative z-10 flex w-[86%] items-center justify-center overflow-hidden rounded-lg border border-black/20 bg-black/40 shadow-xl shadow-black/40 transition-transform duration-500 ease-out group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100 dark:border-white/20">
+            {project.imageMissing ? (
+              <div className="flex aspect-[16/10] w-full items-center justify-center bg-black/50">
+                <span className="font-ibm-plex-mono text-2xl font-medium tracking-wider text-muted-foreground select-none">
+                  Not found
+                </span>
+              </div>
+            ) : (
+              <>
+                {/* Empty space / slip filler: Blurred project photo */}
+                <Image
+                  src={project.image}
+                  alt=""
+                  width={IMAGE_WIDTH}
+                  height={IMAGE_HEIGHT}
+                  sizes="(min-width: 640px) 480px, 90vw"
+                  className="pointer-events-none absolute inset-0 size-full object-cover blur-md scale-110 opacity-75 brightness-90 select-none"
+                  priority={eager}
+                />
+                <div className="absolute inset-0 bg-black/15 pointer-events-none dark:bg-black/30" />
 
-            {/* Main project photo: 100% visible, uncropped */}
-            <Image
-              src={project.image}
-              alt={project.title}
-              fill
-              sizes="(min-width: 640px) 480px, 90vw"
-              className="relative z-10 object-contain drop-shadow-md"
-              quality={85}
-              loading={eager ? "eager" : "lazy"}
-              fetchPriority={eager ? "high" : "auto"}
-            />
+                {/* Main project photo: 100% visible, uncropped. In flow, so its
+                    own ratio sets the frame's height. */}
+                <Image
+                  src={project.image}
+                  alt={project.title}
+                  width={IMAGE_WIDTH}
+                  height={IMAGE_HEIGHT}
+                  sizes="(min-width: 640px) 480px, 90vw"
+                  className="relative z-10 h-auto w-full object-contain drop-shadow-md"
+                  quality={85}
+                  loading={eager ? "eager" : "lazy"}
+                  fetchPriority={eager ? "high" : "auto"}
+                />
+              </>
+            )}
           </div>
         </div>
 

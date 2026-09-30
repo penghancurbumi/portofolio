@@ -61,7 +61,7 @@ const COLLABORATION: Record<string, ProjectCollaboration> = {
       "Mengimplementasikan antarmuka dan alur analisis berbantuan AI secara end-to-end.",
     ],
   },
-  jobfinder: {
+  bidikkerja: {
     ownership: "Individual project",
     ownershipId: "Proyek Individu",
     label: "Individual",
@@ -116,7 +116,8 @@ export const PROJECTS: Project[] = [
     seoDescription:
       "UI/UX case study for UANGKU, a digital finance app concept covering wallet flows, top up, payments, and a simple transaction experience.",
     year: "2025",
-    image: "/projects/uangku/1.webp",
+    image: "/projects/maxgym-performance/image1.webp",
+    imageMissing: true,
     period: { start: "December 2025", end: "December 2025" },
     link: "",
     links: {},
@@ -157,7 +158,6 @@ export const PROJECTS: Project[] = [
     collaboration: COLLABORATION.uangku,
     badge: "UI/UX Case Study",
     badgeId: "Studi Kasus UI/UX",
-    gallery: ["/projects/uangku/1.webp"],
   },
   {
     id: "maxgym",
@@ -171,7 +171,7 @@ export const PROJECTS: Project[] = [
     seoDescription:
       "Built the MaxGym Performance company profile website with PHP, Tailwind CSS, and JavaScript to present the brand, services, and company identity.",
     year: "2026",
-    image: "/projects/maxgym/1.webp",
+    image: "/projects/maxgym-performance/image1.webp",
     period: { start: "February 2026", end: "March 2026" },
     link: "",
     links: {},
@@ -210,7 +210,15 @@ export const PROJECTS: Project[] = [
       "Meningkatkan SEO dengan structured data, sitemap, dan preview Open Graph yang lebih kaya.",
     ],
     collaboration: COLLABORATION.maxgym,
-    gallery: ["/projects/maxgym/1.webp"],
+    gallery: [
+      "/projects/maxgym-performance/image1.webp",
+      "/projects/maxgym-performance/image2.webp",
+      "/projects/maxgym-performance/image3.webp",
+      "/projects/maxgym-performance/image4.webp",
+      "/projects/maxgym-performance/image5.webp",
+      "/projects/maxgym-performance/image6.webp",
+      "/projects/maxgym-performance/image7.webp",
+    ],
   },
   {
     id: "timeleak",
@@ -224,7 +232,7 @@ export const PROJECTS: Project[] = [
     seoDescription:
       "TimeLeak AI (Google #JuaraVibeCoding) turns tracked daily activities into an estimated monetary value to raise time-awareness and productivity.",
     year: "2026",
-    image: "/projects/timeleak/1.webp",
+    image: "/projects/timeleak/image1.webp",
     period: { start: "June 2026", end: "July 2026" },
     link: "",
     links: {},
@@ -265,11 +273,20 @@ export const PROJECTS: Project[] = [
     collaboration: COLLABORATION.timeleak,
     badge: "Google #JuaraVibeCoding",
     badgeId: "Google #JuaraVibeCoding",
-    gallery: ["/projects/timeleak/1.webp"],
+    gallery: [
+      "/projects/timeleak/image1.webp",
+      "/projects/timeleak/image2.webp",
+      "/projects/timeleak/image3.webp",
+      "/projects/timeleak/image4.webp",
+      "/projects/timeleak/image5.webp",
+      "/projects/timeleak/image6.webp",
+      "/projects/timeleak/image7.webp",
+      "/projects/timeleak/image8.webp",
+    ],
   },
   {
-    id: "jobfinder",
-    title: "JobFinder - Job Search & Career Platform",
+    id: "BidikKerja",
+    title: "BidikKerja - Job Search & Career Platform",
     category: "Web Development",
     categoryId: "Pengembangan Web",
     tagline:
@@ -277,9 +294,9 @@ export const PROJECTS: Project[] = [
     taglineId:
       "Platform pencarian kerja yang mengumpulkan lowongan terbaru dan menggabungkan CV Analysis, CV Builder, serta AI chatbot dalam satu ruang kerja karier.",
     seoDescription:
-      "JobFinder combines aggregated job listings with CV Analysis, CV Builder, and an AI chatbot so users can search and prepare for a role in one platform.",
+      "BidikKerja combines aggregated job listings with CV Analysis, CV Builder, and an AI chatbot so users can search and prepare for a role in one platform.",
     year: "2026",
-    image: "/projects/jobfinder/1.webp",
+    image: "/projects/bidikkerja/image1.webp",
     period: { start: "July 2026" },
     link: "",
     links: {},
@@ -317,10 +334,17 @@ export const PROJECTS: Project[] = [
       "Meningkatkan penilaian CV Analysis dengan kata kunci spesifik posisi dan pemeriksaan ATS.",
       "Menambahkan pelacakan lamaran agar pengguna dapat memantau setiap lamaran dalam satu dashboard.",
     ],
-    collaboration: COLLABORATION.jobfinder,
+    collaboration: COLLABORATION.bidikkerja,
     badge: "Ongoing",
     badgeId: "Sedang Berjalan",
-    gallery: ["/projects/jobfinder/1.webp"],
+    gallery: [
+      "/projects/bidikkerja/image1.webp",
+      "/projects/bidikkerja/image2.webp",
+      "/projects/bidikkerja/image3.webp",
+      "/projects/bidikkerja/image4.webp",
+      "/projects/bidikkerja/image5.webp",
+      "/projects/bidikkerja/image6.webp",
+    ],
   },
   {
     id: "silga",
@@ -334,7 +358,7 @@ export const PROJECTS: Project[] = [
     seoDescription:
       "Developed the PT Silga Perkasa company profile website with Next.js, Tailwind CSS, PHP, and Laravel to strengthen the company's digital presence.",
     year: "2026",
-    image: "/projects/silga/1.webp",
+    image: "/projects/silga-perkasa/image1.webp",
     period: { start: "February 2026" },
     link: "",
     links: {},
@@ -375,7 +399,16 @@ export const PROJECTS: Project[] = [
     collaboration: COLLABORATION.silga,
     badge: "Ongoing",
     badgeId: "Sedang Berjalan",
-    gallery: ["/projects/silga/1.webp"],
+    gallery: [
+      "/projects/silga-perkasa/image1.webp",
+      "/projects/silga-perkasa/image2.webp",
+      "/projects/silga-perkasa/image3.webp",
+      "/projects/silga-perkasa/image4.webp",
+      "/projects/silga-perkasa/image5.webp",
+      "/projects/silga-perkasa/image6.webp",
+      "/projects/silga-perkasa/image7.webp",
+      "/projects/silga-perkasa/image8.webp",
+    ],
   },
 ]
 

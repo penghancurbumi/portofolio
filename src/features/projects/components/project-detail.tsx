@@ -117,14 +117,22 @@ export function ProjectDetail({ project }: { project: Project }) {
           <ProjectGallery images={project.gallery} title={project.title} />
         ) : (
           <figure className="relative aspect-video overflow-hidden rounded-xl border border-line bg-card shadow-sm">
-            <Image
-              src={project.image}
-              alt={project.title}
-              fill
-              sizes="(min-width: 1024px) 800px, 100vw"
-              className="object-cover"
-              priority
-            />
+            {project.imageMissing ? (
+              <div className="flex size-full items-center justify-center bg-black/50">
+                <span className="font-ibm-plex-mono text-2xl font-medium tracking-wider text-muted-foreground select-none">
+                  Not found
+                </span>
+              </div>
+            ) : (
+              <Image
+                src={project.image}
+                alt={project.title}
+                fill
+                sizes="(min-width: 1024px) 800px, 100vw"
+                className="object-cover"
+                priority
+              />
+            )}
           </figure>
         )}
       </section>
