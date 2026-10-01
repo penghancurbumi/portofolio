@@ -1,4 +1,4 @@
-import { AsciiFooterBanner } from "@/components/ascii-footer-banner"
+import { FooterBanner } from "@/components/footer-banner"
 import { FooterIndexList, FooterLabel } from "@/components/footer-chrome"
 import { FooterClock } from "@/components/footer-clock"
 import { FooterContactList } from "@/components/footer-contact-list"
@@ -53,7 +53,7 @@ export async function SiteFooter() {
     <footer className="relative z-1 max-w-screen overflow-x-hidden font-ibm-plex-mono sm:px-2">
       <div className="relative mx-auto bg-card group-has-data-[slot=layout-wide]/layout:container md:max-w-[720px]">
         {/* Video preview banner first */}
-        <AsciiFooterBanner />
+        <FooterBanner />
 
         <div className="grid grid-cols-2 gap-x-6 gap-y-8 px-4 pt-8 pb-6 text-sm text-muted-foreground sm:grid-cols-3">
           {/* Colophon. Last on mobile where it reads as a sign-off, first on

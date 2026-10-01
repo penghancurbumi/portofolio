@@ -5,11 +5,11 @@ import { useEffect, useRef, useState } from "react"
 
 import { useTranslation } from "@/lib/i18n/use-translation"
 
-export interface AsciiFooterBannerProps {
+export interface FooterBannerProps {
   className?: string
 }
 
-export function AsciiFooterBanner({ className = "" }: AsciiFooterBannerProps) {
+export function FooterBanner({ className = "" }: FooterBannerProps) {
   const containerRef = useRef<HTMLDivElement | null>(null)
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const [isPlaying, setIsPlaying] = useState(false)
@@ -107,7 +107,7 @@ export function AsciiFooterBanner({ className = "" }: AsciiFooterBannerProps) {
           card it needs to sit far back to keep the editorial text legible. */}
       <video
         ref={videoRef}
-        src="/background-footers.mp4"
+        src="/background-footer.mp4"
         loop
         muted
         playsInline
