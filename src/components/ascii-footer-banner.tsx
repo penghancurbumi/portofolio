@@ -73,7 +73,10 @@ export function AsciiFooterBanner({ className = "" }: AsciiFooterBannerProps) {
       {/* Looped Video */}
       {/* No `autoPlay`: it defeated `preload="none"` and pulled the clip during
           initial load even though the banner sits below the fold. The observer
-          below starts it when it actually scrolls into view. */}
+          below starts it when it actually scrolls into view.
+
+          Opacity is dialled down in light mode: the clip is dark, so on a white
+          card it needs to sit far back to keep the editorial text legible. */}
       <video
         ref={videoRef}
         src="/background-footers.mp4"
@@ -83,21 +86,22 @@ export function AsciiFooterBanner({ className = "" }: AsciiFooterBannerProps) {
         preload="none"
         aria-hidden="true"
         onPlaying={() => setIsPlaying(true)}
-        className={`absolute inset-0 size-full object-cover object-bottom transition-opacity duration-500 ${isPlaying ? "opacity-40" : "opacity-0"
+        className={`absolute inset-0 size-full object-cover object-bottom transition-opacity duration-500 ${isPlaying ? "opacity-15 dark:opacity-40" : "opacity-0"
           }`}
       />
 
-      {/* Subtle Inset Black Shadow Frame */}
+      {/* Inset shadow frame - black in dark mode, a light ink wash in light mode
+          so the frame does not read as a dirty smudge on the white card. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 z-5 shadow-[inset_0_0_24px_rgba(0,0,0,0.45),inset_0_1px_3px_rgba(0,0,0,0.3),inset_0_-1px_3px_rgba(0,0,0,0.3)]"
+        className="pointer-events-none absolute inset-0 z-5 shadow-[inset_0_0_24px_rgba(0,0,0,0.12),inset_0_1px_3px_rgba(0,0,0,0.08),inset_0_-1px_3px_rgba(0,0,0,0.08)] dark:shadow-[inset_0_0_24px_rgba(0,0,0,0.45),inset_0_1px_3px_rgba(0,0,0,0.3),inset_0_-1px_3px_rgba(0,0,0,0.3)]"
       />
 
       {/* Editorial Content - Perfectly centered vertically (50% / 50%) */}
       <div className="absolute inset-0 z-10 flex flex-col justify-center px-5 py-6 sm:px-8">
         <div className="max-w-lg sm:max-w-xl">
           {/* Headline */}
-          <h2 className="font-pixel text-lg leading-snug font-bold tracking-tight text-white sm:text-2xl sm:leading-tight sm:whitespace-nowrap">
+          <h2 className="font-pixel text-lg leading-snug font-bold tracking-tight text-zinc-950 sm:text-2xl sm:leading-tight sm:whitespace-nowrap dark:text-white">
             {l(
               "Turning ideas into working software.",
               "Membangun masa depan dengan data, AI, dan kode."
@@ -105,7 +109,7 @@ export function AsciiFooterBanner({ className = "" }: AsciiFooterBannerProps) {
           </h2>
 
           {/* Description */}
-          <p className="font-pixel mt-1.5 max-w-sm text-xs leading-relaxed text-white/85 sm:mt-2 sm:max-w-lg sm:text-sm">
+          <p className="font-pixel mt-1.5 max-w-sm text-xs leading-relaxed text-zinc-700 sm:mt-2 sm:max-w-lg sm:text-sm dark:text-white/85">
             {l(
               "Exploring, building, and learning through real-world projects.",
               "Mengeksplorasi, membangun, dan belajar melalui proyek nyata."
@@ -118,7 +122,7 @@ export function AsciiFooterBanner({ className = "" }: AsciiFooterBannerProps) {
               href="https://wa.me/6287816001844"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex h-7 shrink-0 items-center justify-center rounded-[min(var(--radius-lg),10px)] bg-white px-3 font-pixel text-xs font-medium tracking-wide text-zinc-950 shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/90 hover:shadow-md focus-visible:ring-2 focus-visible:ring-white focus-visible:outline-none active:translate-y-0 active:scale-[0.98] sm:h-8 sm:px-3.5 sm:text-sm"
+              className="inline-flex h-7 shrink-0 items-center justify-center rounded-[min(var(--radius-lg),10px)] bg-zinc-950 px-3 font-pixel text-xs font-medium tracking-wide text-white shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:bg-zinc-950/90 hover:shadow-md focus-visible:ring-2 focus-visible:ring-zinc-950 focus-visible:outline-none active:translate-y-0 active:scale-[0.98] sm:h-8 sm:px-3.5 sm:text-sm dark:bg-white dark:text-zinc-950 dark:hover:bg-white/90 dark:focus-visible:ring-white"
             >
               <span>{l("Get in touch", "Hubungi Saya")}</span>
             </a>

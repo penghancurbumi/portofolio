@@ -51,7 +51,7 @@ export async function SiteFooter() {
 
   return (
     <footer className="relative z-1 max-w-screen overflow-x-hidden font-ibm-plex-mono sm:px-2">
-      <div className="relative mx-auto bg-black group-has-data-[slot=layout-wide]/layout:container md:max-w-[720px]">
+      <div className="relative mx-auto bg-card group-has-data-[slot=layout-wide]/layout:container md:max-w-[720px]">
         {/* Video preview banner first */}
         <AsciiFooterBanner />
 
