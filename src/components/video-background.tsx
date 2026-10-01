@@ -47,7 +47,7 @@ export function VideoBackground({
           restores the original full-strength look. */}
       <video
         ref={videoRef}
-        className="size-full object-cover opacity-[0.12] dark:opacity-100"
+        className="size-full object-cover opacity-60 dark:opacity-100"
         src={src}
         poster={poster}
         autoPlay
@@ -66,7 +66,7 @@ export function VideoBackground({
           video opacity it flattens the clip to a faint, even tint instead of a
           dark image competing with the foreground. Removed entirely in dark
           mode so the original contrast is untouched. */}
-      <div className="absolute inset-0 bg-background/70 dark:hidden" />
+      <div className="absolute inset-0 bg-background/80 dark:hidden" />
     </div>
   )
 }

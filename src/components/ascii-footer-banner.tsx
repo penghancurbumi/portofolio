@@ -16,6 +16,9 @@ export function AsciiFooterBanner({ className = "" }: AsciiFooterBannerProps) {
   const { l } = useTranslation()
   const pathname = usePathname()
 
+  // Runs on every mount. The banner is dropped on `/terminal` (it early-returns
+  // `null`), so navigating in and out of that route unmounts and remounts this
+  // component - the effect below runs again on the fresh instance.
   useEffect(() => {
     const container = containerRef.current
     const video = videoRef.current
@@ -25,15 +28,26 @@ export function AsciiFooterBanner({ className = "" }: AsciiFooterBannerProps) {
       "(prefers-reduced-motion: reduce)"
     ).matches
 
-    if (reducedMotion) return
+    if (reducedMotion) {
+      // The clip holds its first frame as a still. `onLoadedData` (bound on the
+      // element) flips `isPlaying`, so the still is visible without the effect
+      // touching state synchronously - which React warns about.
+      return
+    }
 
     let isIntersecting = false
+
+    const tryPlay = () => {
+      // `play()` rejects while the element is detached or the tab is hidden;
+      // swallow it, the observer fires again on the next change.
+      video.play().catch(() => { })
+    }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         isIntersecting = entry?.isIntersecting ?? false
         if (isIntersecting && !document.hidden) {
-          video.play().catch(() => { })
+          tryPlay()
         } else {
           video.pause()
         }
@@ -43,11 +57,19 @@ export function AsciiFooterBanner({ className = "" }: AsciiFooterBannerProps) {
 
     observer.observe(container)
 
+    // The observer only fires on a *change* of intersection. If the banner is
+    // already in view when this effect mounts (a client-side navigation keeps
+    // the scroll position), no change ever arrives and the clip would never
+    // start. Kick it once explicitly after the observer is attached.
+    if (!document.hidden) {
+      tryPlay()
+    }
+
     const handleVisibility = () => {
       if (document.hidden) {
         video.pause()
       } else if (isIntersecting) {
-        video.play().catch(() => { })
+        tryPlay()
       }
     }
 
@@ -75,6 +97,12 @@ export function AsciiFooterBanner({ className = "" }: AsciiFooterBannerProps) {
           initial load even though the banner sits below the fold. The observer
           below starts it when it actually scrolls into view.
 
+          Visibility is keyed off `isPlaying`, which is set from BOTH
+          `onPlaying` and `onLoadedData`. `onPlaying` alone is not enough: when
+          the clip is already buffered (a re-mount after navigating away and
+          back) the browser may serve it without firing `playing` again, leaving
+          the element stuck at `opacity-0` - i.e. invisible.
+
           Opacity is dialled down in light mode: the clip is dark, so on a white
           card it needs to sit far back to keep the editorial text legible. */}
       <video
@@ -83,10 +111,12 @@ export function AsciiFooterBanner({ className = "" }: AsciiFooterBannerProps) {
         loop
         muted
         playsInline
-        preload="none"
+        preload="metadata"
         aria-hidden="true"
         onPlaying={() => setIsPlaying(true)}
-        className={`absolute inset-0 size-full object-cover object-bottom transition-opacity duration-500 ${isPlaying ? "opacity-15 dark:opacity-40" : "opacity-0"
+        onLoadedData={() => setIsPlaying(true)}
+        onEmptied={() => setIsPlaying(false)}
+        className={`absolute inset-0 size-full object-cover object-bottom transition-opacity duration-500 ${isPlaying ? "opacity-30 dark:opacity-40" : "opacity-0"
           }`}
       />
 
