@@ -41,9 +41,13 @@ export function VideoBackground({
       aria-hidden="true"
       className={`pointer-events-none fixed inset-0 -z-10 overflow-hidden select-none ${className}`}
     >
+      {/* The clip is a dark, moody loop: at full strength on the light theme it
+          reads as a black page behind white cards. Opacity is dialled way down
+          in light mode so the `--background` tint shows through, then dark:*
+          restores the original full-strength look. */}
       <video
         ref={videoRef}
-        className="size-full object-cover"
+        className="size-full object-cover opacity-[0.12] dark:opacity-100"
         src={src}
         poster={poster}
         autoPlay
@@ -57,6 +61,12 @@ export function VideoBackground({
         preload="metadata"
         disablePictureInPicture
       />
+
+      {/* A white wash over the video in light mode only. Together with the low
+          video opacity it flattens the clip to a faint, even tint instead of a
+          dark image competing with the foreground. Removed entirely in dark
+          mode so the original contrast is untouched. */}
+      <div className="absolute inset-0 bg-background/70 dark:hidden" />
     </div>
   )
 }
